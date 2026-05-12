@@ -1,0 +1,25 @@
+footer {
+    background-color: #374151; /* Dark gray background */
+    color: white; /* White text */
+    padding: 2rem 1rem; /* Padding top/bottom 2rem, left/right 1rem */
+    text-align: center; /* Center text */
+}
+
+.contacts {
+    max-width: 28rem; /* Max width for content */
+    margin: 0 auto; /* Center horizontally */
+}
+
+address {
+    margin-bottom: 1rem; /* Space below address */
+}
+
+h3 {
+    font-size: 1.125rem; /* Larger font for headings */
+    font-weight: 600; /* Semibold */
+    margin-bottom: 0.5rem; /* Space below headings */
+}
+
+p {
+    margin: 0; /* Remove default margin */
+}

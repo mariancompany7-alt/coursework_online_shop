@@ -1,0 +1,23 @@
+const Box = require('../models/Box');
+
+// Отримуємо всі бокси з бази даних
+exports.getAllBoxes = async (req, res) => {
+    try {
+        const boxes = await Box.find(); // Шукає всі записи в колекції boxes
+        res.status(200).json(boxes);
+    } catch (error) {
+        console.error('Помилка отримання боксів:', error);
+        res.status(500).json({ message: 'Помилка сервера', error: error.message });
+    }
+};
+
+// Тимчасова функція для додавання боксу (знадобиться нам для заповнення БД)
+exports.createBox = async (req, res) => {
+    try {
+        const newBox = new Box(req.body);
+        const savedBox = await newBox.save();
+        res.status(201).json(savedBox);
+    } catch (error) {
+        res.status(400).json({ message: 'Помилка валідації', error: error.message });
+    }
+};
