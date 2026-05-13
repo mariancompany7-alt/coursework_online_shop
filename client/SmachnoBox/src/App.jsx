@@ -8,25 +8,23 @@ import Dashboard from './pages/Dashboard/Dashboard'
 
 import Header from './components/Header/Header'
 import Navbar from './components/Navbar/Navbar'
-import Main from './components/Main/Main'
 import Footer from './components/Footer/Footer'
 
 function App() {
   return (
     <div className="app-container">
-      {/* Header can contain the Navbar, or they can be siblings */}
       <Header>
         <Navbar />
       </Header>
 
-      {/* Using your custom Main component instead of the native HTML tag */}
-      <Main>
+      {/* CHANGED: Use lowercase HTML <main> tag here! */}
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
-      </Main>
+      </main>
 
       <Footer />
     </div>
