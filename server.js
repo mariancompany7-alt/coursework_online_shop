@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./server/config/db');
 const path = require('path');
+const cors = require('cors');
 const { port } = require('./server/config/config');
 
 const app = express();
 
-// Вбудований middleware для розпізнавання вхідних запитів як об'єктів JSON
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
 

@@ -15,7 +15,7 @@ function Main({ plans }) {
         </div>
         <div className={styles['cards-grid']}>
           {plans.map((plan) => (
-            <Card key={plan.id} boxData={plan} />
+            <Card key={plan._id} boxData={plan} />
           ))}
         </div>
       </section>
