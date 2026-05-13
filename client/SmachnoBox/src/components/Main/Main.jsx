@@ -2,7 +2,10 @@ import React from 'react'
 import Card from '../products/ProductCard/Card'
 import styles from './Main.module.css'
 
-function Main() {
+function Main({ plans }) {
+
+  if (!plans) return <p>Loading plans...</p>;
+  
   return (
     <div className={styles['main-wrapper']}>
       <section className={styles.mealPlans}>

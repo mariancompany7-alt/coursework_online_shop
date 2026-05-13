@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from "react-router";
+import { Routes, Route } from "react-router";
 import './App.module.css'
 
 import Home from './pages/Home/Home'
@@ -13,14 +13,22 @@ import Footer from './components/Footer/Footer'
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Navbar>
-          <Header />
-          <Main />
-          <Footer />
-        </Navbar>
-      </Routes>
+    <div className="app-container">
+      {/* Header can contain the Navbar, or they can be siblings */}
+      <Header>
+        <Navbar />
+      </Header>
+
+      {/* Using your custom Main component instead of the native HTML tag */}
+      <Main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Main>
+
+      <Footer />
     </div>
   )
 }
