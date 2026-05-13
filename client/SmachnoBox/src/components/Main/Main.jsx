@@ -1,6 +1,5 @@
 import React from 'react'
-import Card from '../MealPlansCard/Card'
-import { mealPlans } from '../../mealPlans'
+import Card from '../products/ProductCard/Card'
 import styles from './Main.module.css'
 
 function Main() {
