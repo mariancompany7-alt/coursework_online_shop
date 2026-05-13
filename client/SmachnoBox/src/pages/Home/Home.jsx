@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 import Main from '../../components/Main/Main';
 
 function Home() {
-  const [plans, setPlans] = useState(null); // State to hold DB data
+  // 1. Initialize state as an empty array
+  const [plans, setPlans] = useState([]); 
 
   useEffect(() => {
-    // Call your backend endpoint
+    // 2. Fetch the data from your backend
     fetch('http://localhost:5000/api/boxes')
       .then((response) => response.json())
       .then((data) => {
-        setPlans(data); // Save the boxes into state
+        setPlans(data); // 3. Save the database data
       })
       .catch((error) => console.error("Error fetching plans:", error));
   }, []);
 
   return (
     <div>
-      {/* Pass the data down to Main */}
+      {/* 4. Render the Main component and pass the data to it */}
       <Main plans={plans} />
     </div>
   );
