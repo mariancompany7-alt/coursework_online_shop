@@ -1,25 +1,177 @@
-footer {
-    background-color: #374151; /* Dark gray background */
-    color: white; /* White text */
-    padding: 2rem 1rem; /* Padding top/bottom 2rem, left/right 1rem */
-    text-align: center; /* Center text */
+.footer {
+    background-color: #303030;
+    color: #ffffff;
+    padding: 70px 0 30px 0;
+    margin-top: 60px;
+    border-top: 1px solid #4a4a4a;
 }
 
-.contacts {
-    max-width: 28rem; /* Max width for content */
-    margin: 0 auto; /* Center horizontally */
+.footerContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 50px;
 }
 
-address {
-    margin-bottom: 1rem; /* Space below address */
+.brandColumn {
+    flex: 1.5;
+    min-width: 280px;
 }
 
-h3 {
-    font-size: 1.125rem; /* Larger font for headings */
-    font-weight: 600; /* Semibold */
-    margin-bottom: 0.5rem; /* Space below headings */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-p {
-    margin: 0; /* Remove default margin */
+.logo img {
+    height: 45px;
+    width: 45px;
+}
+
+.logo h1 {
+    color: #56ab2f;
+    /* Твій фірмовий зелений */
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.brandColumn p {
+    color: #bdc3c7;
+    /* Світло-сірий для опису */
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Кнопки соцмереж */
+.socialLinks {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.socialBtn {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 18px;
+    border: 1px solid #444;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    background-color: transparent;
+}
+
+.socialBtn:hover {
+    background-color: #56ab2f;
+    border-color: #56ab2f;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(86, 171, 47, 0.3);
+}
+
+/* Колонки списків */
+.column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.column h3 {
+    font-size: 22px;
+    margin-bottom: 25px;
+    color: #ffffff;
+    font-weight: 600;
+    position: relative;
+}
+
+.column h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 35px;
+    height: 2px;
+    background-color: #56ab2f;
+}
+
+.column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.column ul li {
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 20px;
+    /* Додаємо відступ для нашого нового маркера */
+    display: flex;
+    align-items: center;
+}
+
+/* Створюємо цікавий зелений маркер (шеврон) */
+.column ul li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    top: 48%;
+    transform: translateY(-50%);
+    color: #56ab2f;
+    font-size: 20px;
+    font-weight: bold;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.column ul li a,
+.column ul li span {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 17px;
+    transition: color 0.3s ease;
+}
+
+.column ul li a:hover {
+    color: #ffffff;
+}
+
+/* Нижня частина */
+.copyright {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding: 25px 20px 0;
+    border-top: 1px solid #333;
+    text-align: center;
+}
+
+.copyright p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+    .footerContent {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .logo,
+    .socialLinks {
+        justify-content: center;
+    }
+
+    .column h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .brandColumn p {
+        max-width: 100%;
+    }
 }

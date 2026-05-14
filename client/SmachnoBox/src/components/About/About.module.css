@@ -1,0 +1,78 @@
+.about {
+  padding: 100px 0;
+  background-color: #121212; /* Темний фон замість білого */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.textContent {
+  flex: 1;
+}
+
+.title {
+  font-size: 36px;
+  color: #ffffff; /* Білий заголовок */
+  margin-bottom: 20px;
+  font-weight: 800;
+}
+
+.description {
+  font-size: 18px;
+  color: #bdc3c7; /* Світло-сірий текст */
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+}
+
+.featureItem h4 {
+  font-size: 18px;
+  color: #ffffff; /* Білі підзаголовки */
+  margin: 15px 0 10px 0;
+}
+
+.featureItem p {
+  font-size: 14px;
+  color: #a0a0a0; /* Сірий опис */
+  line-height: 1.4;
+}
+
+.icon {
+  font-size: 32px;
+  background: rgba(86, 171, 47, 0.15); /* Прозорий зелений */
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(86, 171, 47, 0.3); /* Легка зелена рамочка */
+}
+
+.imageContent {
+  flex: 0.8;
+}
+
+.imageContent img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 15px 15px 0px #56ab2f; /* Зелений акцент */
+}
+
+@media (max-width: 992px) {
+  .container { flex-direction: column; text-align: center; }
+  .icon { margin: 0 auto; }
+  .imageContent { order: -1; }
+}

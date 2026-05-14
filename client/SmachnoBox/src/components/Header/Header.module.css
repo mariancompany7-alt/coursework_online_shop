@@ -1,11 +1,11 @@
 .header {
-  background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: relative; /* Change if needed to sticky */
+  background-color: #303030; /* Чорний/Темно-сірий фон, як у футері */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Темніша тінь */
+  position: sticky; /* Залишається зверху при скролі */
   max-width: 100%;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #4a4a4a; /* Темна роздільна смуга замість світлої */
 }
 
 .headerContent {
@@ -31,7 +31,7 @@
 }
 
 .logo h1 {
-  color: #1f4d25;
+  color: #56ab2f; /* Змінили на яскраво-зелений, щоб світився на чорному */
   font-size: 24px;
   font-weight: 700;
   margin: 0;
@@ -46,7 +46,7 @@
 }
 
 .navigation a {
-  color: #333;
+  color: #ffffff; /* Змінили текст меню на білий */
   text-decoration: none;
   font-weight: 500;
   font-size: 18px;
@@ -55,9 +55,10 @@
 }
 
 .navigation a:hover {
-  color: #56ab2f;
+  color: #56ab2f; /* При наведенні стає фірмовим зеленим */
 }
 
+/* Зелена лінія підкреслення */
 .navigation a::after {
   content: '';
   position: absolute;
@@ -73,6 +74,7 @@
   width: 100%;
 }
 
+/* Адаптивність для мобільних пристроїв */
 @media (max-width: 768px) {
   .headerContent {
     flex-direction: column;
