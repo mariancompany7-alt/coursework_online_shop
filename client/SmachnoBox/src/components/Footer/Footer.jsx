@@ -27,8 +27,8 @@ function Footer() {
           <h3>Про нас</h3>
           <ul>
             <li><Link to="/">Головна</Link></li>
-            <li><a href="#about">Про нас</a></li>
-            <li><a href="#menu">Меню</a></li>
+            <li><a href="/#about">Про нас</a></li>
+            <li><a href="/#menu">Меню</a></li>
           </ul>
         </div>
 

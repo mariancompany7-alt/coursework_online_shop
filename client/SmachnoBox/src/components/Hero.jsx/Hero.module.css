@@ -3,9 +3,10 @@
     width: 100%;
     min-height: 500px;
     height: 80vh;
-    background-image: url('/client/SmachnoBox/public/images/about.jpg');
+    background-image: url('/images/about2.jpg');
     background-size: cover;
     background-position: center;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
 }
 
 .overlay {
@@ -58,7 +59,6 @@
 .ctaButton:hover {
   background-color: #458a25;
   transform: translateY(-3px); /* Кнопка трохи піднімається */
-  box-shadow: 0 10px 20px rgba(86, 171, 47, 0.3); /* Додаємо зелену тінь */
 }
 
 /* Адаптивність для телефонів */
