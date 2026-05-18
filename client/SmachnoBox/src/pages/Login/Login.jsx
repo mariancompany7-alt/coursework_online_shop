@@ -4,6 +4,7 @@ import styles from './Login.module.css';
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [registerMethod, setRegisterMethod] = useState('email');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -45,31 +46,54 @@ function Login() {
         <h2>Вхід у SmachnoBox</h2>
         <p className={styles.subtitle}>З поверненням! Будь ласка, введіть свої дані.</p>
 
+        <div className={styles.toggleContainer}>
+          {/* Сам зелений повзунок. Додаємо клас sliderRight, якщо вибрано телефон */}
+          <div
+            className={`${styles.toggleSlider} ${registerMethod === 'phone' ? styles.sliderRight : ''}`}
+          />
+
+          <button
+            type="button"
+            className={`${styles.toggleBtn} ${registerMethod === 'email' ? styles.activeText : ''}`}
+            onClick={() => setRegisterMethod('email')}
+          >
+            Через Email
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.toggleBtn} ${registerMethod === 'phone' ? styles.activeText : ''}`}
+            onClick={() => setRegisterMethod('phone')}
+          >
+            Через Телефон
+          </button>
+        </div>
+        
         {error && <div className={styles.errorAlert}>{error}</div>}
         {success && <div className={styles.successAlert}>{success}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
             <label>Email</label>
-            <input 
-              type="email" 
-              name="email" 
-              value={formData.email} 
-              onChange={handleChange} 
-              placeholder="example@gmail.com" 
-              required 
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="example@gmail.com"
+              required
             />
           </div>
 
           <div className={styles.inputGroup}>
             <label>Пароль</label>
-            <input 
-              type="password" 
-              name="password" 
-              value={formData.password} 
-              onChange={handleChange} 
-              placeholder="Ваш пароль" 
-              required 
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Ваш пароль"
+              required
             />
           </div>
 

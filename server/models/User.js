@@ -11,13 +11,13 @@ const addressSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
   full_name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, sparse: true, unique: true },
   password_hash: { type: String, required: true },
-  phone: { type: String, required: true },
-  
+  phone: { type: String, sparse: true, unique: true },
+
   // Вбудований масив адрес (1-до-багатьох)
   addresses: [addressSchema],
-  
+
   role: { type: String, enum: ['customer', 'admin'], default: 'customer' }
 }, { timestamps: true });
 

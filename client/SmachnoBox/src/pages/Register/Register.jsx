@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './Register.module.css';
 
 function Register() {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ full_name: '', email: '', phone: '', password_hash: '' });
+  const [registerMethod, setRegisterMethod] = useState('email'); // 'email' або 'phone'
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const navigate = useNavigate(); // Для автоматичного перенаправлення після успіху
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,18 +18,20 @@ function Register() {
     setError('');
     setSuccess('');
 
-    // Відправляємо дані на наш Node.js бекенд
+    // Очищаємо непотрібне поле перед відправкою
+    const dataToSend = { ...formData };
+    if (registerMethod === 'email') delete dataToSend.phone;
+    if (registerMethod === 'phone') delete dataToSend.email;
+
     fetch('http://localhost:5000/api/users/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(dataToSend),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setSuccess('Реєстрація успішна! Перенаправлення на вхід...');
-          setFormData({ name: '', email: '', password: '' });
-          // Через 2 секунди перенаправляємо на сторінку входу
+          setSuccess('Реєстрація успішна! Перенаправлення...');
           setTimeout(() => navigate('/login'), 2000);
         } else {
           setError(data.message || 'Щось пішло не так');
@@ -44,33 +47,62 @@ function Register() {
     <div className={styles.container}>
       <div className={styles.card}>
         <h2>Реєстрація у SmachnoBox</h2>
-        <p className={styles.subtitle}>Створіть акаунт, щоб замовляти смачні раціони!</p>
+
+        {/* Новий плавний перемикач методів реєстрації */}
+        <div className={styles.toggleContainer}>
+          {/* Сам зелений повзунок. Додаємо клас sliderRight, якщо вибрано телефон */}
+          <div
+            className={`${styles.toggleSlider} ${registerMethod === 'phone' ? styles.sliderRight : ''}`}
+          />
+
+          <button
+            type="button"
+            className={`${styles.toggleBtn} ${registerMethod === 'email' ? styles.activeText : ''}`}
+            onClick={() => setRegisterMethod('email')}
+          >
+            Через Email
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.toggleBtn} ${registerMethod === 'phone' ? styles.activeText : ''}`}
+            onClick={() => setRegisterMethod('phone')}
+          >
+            Через Телефон
+          </button>
+        </div>
 
         {error && <div className={styles.errorAlert}>{error}</div>}
         {success && <div className={styles.successAlert}>{success}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
-            <label>Ім'я</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Ваше ім'я" required />
+            <label>Ім'я та Прізвище</label>
+            <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} placeholder="Ваше ім'я" required />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>Email</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="example@gmail.com" required />
-          </div>
+          {/* Показуємо потрібне поле залежно від вибраного методу */}
+          {registerMethod === 'email' ? (
+            <div className={styles.inputGroup}>
+              <label>Email</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="example@gmail.com" required />
+            </div>
+          ) : (
+            <div className={styles.inputGroup}>
+              <label>Телефон</label>
+              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+380 99 999 99 99" required />
+            </div>
+          )}
 
           <div className={styles.inputGroup}>
             <label>Пароль</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Мінімум 6 символів" required />
+            <input type="password" name="password_hash" value={formData.password_hash} onChange={handleChange} placeholder="Мінімум 6 символів" required />
           </div>
 
           <button type="submit" className={styles.submitBtn}>Зареєструватися</button>
         </form>
 
-        <p className={styles.footerText}>
-          Вже маєте акаунт? <Link to="/login" className={styles.link}>Увійти</Link>
-        </p>
+        <p className={styles.footerText}>Вже маєте акаунт? <Link to="/login" className={styles.link}>Увійти</Link></p>
       </div>
     </div>
   );
