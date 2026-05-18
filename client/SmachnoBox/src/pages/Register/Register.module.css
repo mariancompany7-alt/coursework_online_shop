@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  background-color: #121212; /* Загальний темний фон */
+  background-color: #121212; /* Темний фон під загальну тему */
   padding: 20px;
 }
 
@@ -61,7 +61,7 @@
 
 .inputGroup input:focus {
   outline: none;
-  border-color: #56ab2f; /* Твій фірмовий зелений */
+  border-color: #56ab2f; /* Фірмовий зелений */
   box-shadow: 0 0 0 3px rgba(86, 171, 47, 0.2);
 }
 
@@ -83,7 +83,7 @@
   transform: translateY(-2px);
 }
 
-/* Стилі для повідомлень */
+/* Повідомлення про помилки та успіх */
 .errorAlert {
   background-color: rgba(231, 76, 60, 0.2);
   color: #e74c3c;
