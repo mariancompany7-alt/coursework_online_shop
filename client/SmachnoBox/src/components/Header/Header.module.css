@@ -74,6 +74,8 @@
   width: 100%;
 }
 
+
+
 /* Адаптивність для мобільних пристроїв */
 @media (max-width: 768px) {
   .headerContent {
