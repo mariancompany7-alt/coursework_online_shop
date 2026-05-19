@@ -1,49 +1,69 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from '../Header/Header.module.css';
+import defaultAvatar from '../../../public/images/avatar.png'; 
 
 function Navbar() {
-  const location = useLocation(); // Відстежує переходи між сторінками
+  const location = useLocation();
   const [user, setUser] = useState(null);
 
+  // Перевірка авторизації
   useEffect(() => {
-    // Щоразу при зміні URL перевіряємо, чи увійшов користувач
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     } else {
       setUser(null);
     }
-  }, [location]); // Цей масив залежностей змушує навбар оновлюватися миттєво
+  }, [location]);
 
-  // Функція для плавного скролу по головній сторінці
-  const handleScroll = (e, id) => {
-    if (location.pathname === '/') {
-      e.preventDefault();
+  // Плавний скрол для хеш-посилань після завантаження сторінки
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.history.pushState(null, '', `/#${id}`);
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 0);
       }
     }
-  };
+  }, [location]);
 
   return (
-    <nav className={styles.navigation}>
-      <ul>
-        <li><Link to="/">Головна</Link></li>
-        <li><Link to="/#about" onClick={(e) => handleScroll(e, 'about')}>Про нас</Link></li>
-        <li><Link to="/#menu" onClick={(e) => handleScroll(e, 'menu')}>Меню</Link></li>
-        <li><Link to="/#contact" onClick={(e) => handleScroll(e, 'contact')}>Контакти</Link></li>
-      </ul>
+    <div className={styles.navbarWrapper}>
+      {/* Навігаційне меню */}
+      <nav className={styles.navigation}>
+        <ul>
+          <li><Link to="/">Головна</Link></li>
+          <li><a href="/#about">Про нас</a></li>
+          <li><a href="/#menu">Меню</a></li>
+          <li><a href="#contact">Контакти</a></li>
+        </ul>
+      </nav>
       
-      <Link to={user ? "/dashboard" : "/login"}>
-        <div className={styles.actions}>
-          <button type='button' className={styles.button}>Увійти</button>
-        </div>
-      </Link>
-
-    </nav>
+      {/* Блок елементів керування */}
+      <div className={styles.actions}>
+        {user ? (
+          /* Овальна капсула особистого кабінету */
+          <Link to="/dashboard" className={styles.profileLink} title="Особистий кабінет">
+            <span className={styles.username}>Кабінет</span>
+            <div className={styles.profileAvatar}>
+              <img 
+                src={defaultAvatar} 
+                alt="Аватар користувача" 
+                className={styles.avatarImg} 
+              />
+            </div>
+          </Link>
+        ) : (
+          /* Кнопка входу для неавторизованих користувачів */
+          <Link to="/login">
+            <button type="button" className={styles.button}>Увійти</button>
+          </Link>
+        )}
+      </div>
+    </div>
   );
 }
 

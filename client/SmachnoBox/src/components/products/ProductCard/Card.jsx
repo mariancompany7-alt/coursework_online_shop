@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import styles from './Card.module.css'
 
 function Card({ boxData }) {
@@ -44,12 +45,14 @@ function Card({ boxData }) {
                     </div>
                 </div>
 
-                {/* Передача _id для майбутньої логіки додавання в корзину */}
-                <button
-                    className={styles['card-button']}
-                    onClick={() => console.log(`Замовлення боксу: ${_id}`)}>
-                    Subscribe Now
-                </button>
+                <Link to="/checkout" className={styles.secondaryButton}>
+                    <button
+                        className={styles['card-button']}
+                        onClick={() => console.log(`Замовлення боксу: ${_id}`)}>
+                        Subscribe Now
+                    </button>
+                </Link>
+
             </div>
         </div>
     );

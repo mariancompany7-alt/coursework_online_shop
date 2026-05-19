@@ -11,6 +11,8 @@ import Header from './components/Header/Header'
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 
+import Checkout from './pages/Checkout/Checkout';
+
 function App() {
   return (
     <div className="app-container">
@@ -25,6 +27,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/checkout" element={<Checkout totalAmount={850} cartItems={[]} />} />
         </Routes>
       </main>
 
