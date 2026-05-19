@@ -1,11 +1,15 @@
 .header {
-  background-color: #303030; /* Чорний/Темно-сірий фон, як у футері */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Темніша тінь */
-  position: sticky; /* Залишається зверху при скролі */
+  background-color: #303030;
+  /* Чорний/Темно-сірий фон, як у футері */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  /* Темніша тінь */
+  position: sticky;
+  /* Залишається зверху при скролі */
   max-width: 100%;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid #4a4a4a; /* Темна роздільна смуга замість світлої */
+  border-bottom: 1px solid #4a4a4a;
+  /* Темна роздільна смуга замість світлої */
 }
 
 .headerContent {
@@ -31,7 +35,8 @@
 }
 
 .logo h1 {
-  color: #56ab2f; /* Змінили на яскраво-зелений, щоб світився на чорному */
+  color: #56ab2f;
+  /* Змінили на яскраво-зелений, щоб світився на чорному */
   font-size: 24px;
   font-weight: 700;
   margin: 0;
@@ -46,7 +51,8 @@
 }
 
 .navigation a {
-  color: #ffffff; /* Змінили текст меню на білий */
+  color: #ffffff;
+  /* Змінили текст меню на білий */
   text-decoration: none;
   font-weight: 500;
   font-size: 18px;
@@ -55,7 +61,8 @@
 }
 
 .navigation a:hover {
-  color: #56ab2f; /* При наведенні стає фірмовим зеленим */
+  color: #56ab2f;
+  /* При наведенні стає фірмовим зеленим */
 }
 
 /* Зелена лінія підкреслення */
@@ -74,7 +81,26 @@
   width: 100%;
 }
 
+.button {
+  width: 100px;
+  height: 40px;
+  background-color: #56ab2f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-size: 16px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: 800;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, all 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+}
 
+.button:hover {
+  background-color: #458a25;
+  transform: translateY(-3px);
+}
 
 /* Адаптивність для мобільних пристроїв */
 @media (max-width: 768px) {

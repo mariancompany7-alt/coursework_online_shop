@@ -35,14 +35,14 @@ function Navbar() {
         <li><Link to="/#about" onClick={(e) => handleScroll(e, 'about')}>Про нас</Link></li>
         <li><Link to="/#menu" onClick={(e) => handleScroll(e, 'menu')}>Меню</Link></li>
         <li><Link to="/#contact" onClick={(e) => handleScroll(e, 'contact')}>Контакти</Link></li>
-        
-        {/* Кнопка динамічно змінює свій текст та куди вона веде */}
-        <li>
-          <Link to={user ? "/dashboard" : "/login"}>
-            {user ? "Мій профіль" : "Увійти"}
-          </Link>
-        </li>
       </ul>
+      
+      <Link to={user ? "/dashboard" : "/login"}>
+        <div className={styles.actions}>
+          <button type='button' className={styles.button}>Увійти</button>
+        </div>
+      </Link>
+
     </nav>
   );
 }
