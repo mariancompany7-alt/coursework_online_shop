@@ -10,7 +10,7 @@ const boxSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Ingredient' 
   }],
-  tags: [{ type: String }] // Наприклад: ["High protein", "Vegan"]
+  tags: [{ type: String }]
 });
 
 module.exports = mongoose.model('Box', boxSchema);

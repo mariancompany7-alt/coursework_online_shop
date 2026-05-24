@@ -32,8 +32,10 @@ function Login() {
         if (data.success) {
           setSuccess('Вхід успішний! Перенаправлення...');
 
-          // ОБОВ'ЯЗКОВО: Записуємо дані користувача в пам'ять браузера
-          localStorage.setItem('user', JSON.stringify(data.user));
+          if (response.data.success) {
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+          }
 
           setTimeout(() => navigate('/dashboard'), 2000);
         } else {

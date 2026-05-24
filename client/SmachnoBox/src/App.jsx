@@ -13,6 +13,9 @@ import Footer from './components/Footer/Footer'
 
 import Checkout from './pages/Checkout/Checkout';
 
+import AdminRoute from './components/AdminRoute';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+
 function App() {
   return (
     <div className="app-container">
@@ -28,6 +31,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/checkout" element={<Checkout totalAmount={850} cartItems={[]} />} />
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
         </Routes>
       </main>
 

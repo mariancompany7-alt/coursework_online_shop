@@ -13,6 +13,11 @@
 // Вибір вашої бази даних
 use('smachnobox_db');
 
+db.users.updateOne(
+  { email: "admin@gmail.com" }, 
+  { $set: { role: "admin" } }
+);
+
 // Очищення колекцій перед завантаженням нових даних
 db.boxes.drop();
 db.ingredients.drop();
