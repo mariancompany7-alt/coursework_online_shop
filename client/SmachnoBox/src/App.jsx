@@ -13,7 +13,6 @@ import Footer from './components/Footer/Footer'
 
 import Checkout from './pages/Checkout/Checkout';
 
-import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 
 function App() {
@@ -23,7 +22,6 @@ function App() {
         <Navbar />
       </Header>
 
-      {/* CHANGED: Use lowercase HTML <main> tag here! */}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -31,9 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/checkout" element={<Checkout totalAmount={850} cartItems={[]} />} />
-          <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Route>
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
 

@@ -1,49 +1,50 @@
-// client/SmachnoBox/src/pages/Admin/tabs/AdminUsers.jsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import styles from './AdminTabs.module.css';
 
-const AdminUsers = () => {
+export default function AdminUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/users', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setUsers(res.data);
-      } catch (error) {
-        console.error("Помилка при завантаженні користувачів", error);
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5000/api/users', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
       }
     };
     fetchUsers();
   }, []);
 
   return (
-    <div style={{ background: 'white', padding: '24px', borderRadius: '8px' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div className={styles.container}>
+      <h2 className={styles.title}>База користувачів системи</h2>
+      <table className={styles.table}>
         <thead>
-          <tr style={{ background: '#f1f2f6', textAlign: 'left' }}>
-            <th style={{ padding: '12px' }}>Ім'я</th>
-            <th style={{ padding: '12px' }}>Email</th>
-            <th style={{ padding: '12px' }}>Телефон</th>
-            <th style={{ padding: '12px' }}>Роль</th>
+          <tr>
+            <th>Повне ім'я</th>
+            <th>Електронна пошта</th>
+            <th>Контактний телефон</th>
+            <th>Рівень доступу</th>
           </tr>
         </thead>
         <tbody>
           {users.map(u => (
-            <tr key={u._id} style={{ borderBottom: '1px solid #ddd' }}>
-              <td style={{ padding: '12px' }}>{u.full_name}</td>
-              <td style={{ padding: '12px' }}>{u.email || '—'}</td>
-              <td style={{ padding: '12px' }}>{u.phone || '—'}</td>
-              <td style={{ padding: '12px' }}><span style={{ color: u.role === 'admin' ? '#e74c3c' : '#2ecc71', fontWeight: 'bold' }}>{u.role}</span></td>
+            <tr key={u._id}>
+              <td>{u.full_name}</td>
+              <td>{u.email || '—'}</td>
+              <td>{u.phone || '—'}</td>
+              <td>
+                <span className={u.role === 'admin' ? styles.roleAdmin : styles.roleUser}>
+                  {u.role.toUpperCase()}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-};
-
-export default AdminUsers;
+}

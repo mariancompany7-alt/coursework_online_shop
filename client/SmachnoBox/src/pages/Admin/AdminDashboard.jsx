@@ -1,88 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import styles from './AdminDashboard.module.css';
-
-// Імпортуємо підкомпоненти для кожної категорії
-import AdminBoxes from './tabs/AdminBoxes';
+import React, { useState } from 'react';
 import AdminOrders from './tabs/AdminOrders';
+import AdminBoxes from './tabs/AdminBoxes';
 import AdminUsers from './tabs/AdminUsers';
+import styles from './tabs/AdminTabs.module.css';
 
 const AdminDashboard = () => {
-  // Стейт для відстеження активної категорії ('boxes', 'orders', 'users')
-  const [activeTab, setActiveTab] = useState('boxes');
-  const [adminInfo, setAdminInfo] = useState(null);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setAdminInfo(JSON.parse(savedUser));
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-  };
+  const [activeTab, setActiveTab] = useState('orders');
 
   return (
-    <div className={styles.dashboardContainer}>
-      {/* Бокова панель з вибором категорій */}
-      <aside className={styles.sidebar}>
-        <div className={styles.logoArea}>
-          <h2>SmachnoBox</h2>
-          <span className={styles.badge}>Панель керування</span>
-        </div>
-
-        <nav className={styles.navigation}>
+    <div style={{ backgroundColor: '#f4f7f6', minHeight: '100vh', padding: '30px 20px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        
+        {/* Горизонтальні вкладки зверху сторінки */}
+        <div className={styles.tabsContainer}>
           <button 
-            className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
-            onClick={() => setActiveTab('boxes')}
-          >
-            📦 Товари та бокси
-          </button>
-          
-          <button 
-            className={`${styles.navBtn} ${activeTab === 'orders' ? styles.activeBtn : ''}`}
+            className={`${styles.tabButton} ${activeTab === 'orders' ? styles.activeTab : ''}`}
             onClick={() => setActiveTab('orders')}
           >
-            📋 Замовлення
+            📦 Замовлення
           </button>
-          
           <button 
-            className={`${styles.navBtn} ${activeTab === 'users' ? styles.activeBtn : ''}`}
+            className={`${styles.tabButton} ${activeTab === 'boxes' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('boxes')}
+          >
+            🍔 Каталог Боксів
+          </button>
+          <button 
+            className={`${styles.tabButton} ${activeTab === 'users' ? styles.activeTab : ''}`}
             onClick={() => setActiveTab('users')}
           >
-            👥 Користувачі
+            👥 Клієнти / Користувачі
           </button>
-        </nav>
-
-        <div className={styles.sidebarFooter}>
-          <div className={styles.adminName}>{adminInfo?.full_name || 'Адміністратор'}</div>
-          <button onClick={handleLogout} className={styles.logoutBtn}>Вийти</button>
         </div>
-      </aside>
 
-      {/* Основна робоча область сайту */}
-      <main className={styles.mainContent}>
-        {/* Шапка сторінки, яка змінює заголовок залежно від категорії */}
-        <header className={styles.header}>
-          <h1>
-            {activeTab === 'boxes' && 'Керування каталогом товарів'}
-            {activeTab === 'orders' && 'Управління поточними замовленнями'}
-            {activeTab === 'users' && 'Список зареєстрованих користувачів'}
-          </h1>
-          <div className={styles.profileBadge}>
-            <span>{adminInfo?.email || 'admin@smachnobox.com'}</span>
-          </div>
-        </header>
-
-        {/* Динамічний вивід потрібного компонента */}
-        <div className={styles.contentBody}>
-          {activeTab === 'boxes' && <AdminBoxes />}
+        {/* Контент обраної вкладки */}
+        <div>
           {activeTab === 'orders' && <AdminOrders />}
+          {activeTab === 'boxes' && <AdminBoxes />}
           {activeTab === 'users' && <AdminUsers />}
         </div>
-      </main>
+
+      </div>
     </div>
   );
 };
