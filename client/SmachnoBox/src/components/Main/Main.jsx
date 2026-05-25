@@ -10,8 +10,8 @@ function Main({ plans }) {
     <div className={styles['main-wrapper']}>
       <section className={styles.mealPlans}>
         <div className={styles['section-header']}>
-          <h1>Our Healthy Meal Plans</h1>
-          <p>Choose the perfect subscription plan for your lifestyle</p>
+          <h1>Наші плани здорового харчування</h1>
+          <p>Оберіть ідеальний план підписки для вашого способу життя</p>
         </div>
         <div className={styles['cards-grid']}>
           {plans.map((plan) => (

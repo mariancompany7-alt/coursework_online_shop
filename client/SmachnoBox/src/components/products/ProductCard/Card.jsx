@@ -29,19 +29,19 @@ function Card({ boxData }) {
                 <div className={styles['card-details']}>
                     {/* Статичні значення для полів, яких ще немає в БД */}
                     <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Meals/Week:</span>
+                        <span className={styles['detail-label']}>Страв на тиждень:</span>
                         <span className={styles['detail-value']}>21</span>
                     </div>
 
                     <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Price:</span>
+                        <span className={styles['detail-label']}>Ціна:</span>
                         {/* Форматування ціни */}
                         <span className={styles['detail-value']}>{price} ₴</span>
                     </div>
 
                     <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Delivery:</span>
-                        <span className={styles['detail-value']}>Daily</span>
+                        <span className={styles['detail-label']}>Доставка:</span>
+                        <span className={styles['detail-value']}>Щодня</span>
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@ function Card({ boxData }) {
                     <button
                         className={styles['card-button']}
                         onClick={() => console.log(`Замовлення боксу: ${_id}`)}>
-                        Subscribe Now
+                        Замовити зараз
                     </button>
                 </Link>
 
@@ -58,4 +58,4 @@ function Card({ boxData }) {
     );
 }
 
-export default Card
+export default Card;

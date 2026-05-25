@@ -10,7 +10,9 @@ const generateToken = (id) => {
 
 exports.createUser = async (req, res) => {
   try {
-    const { email, phone } = req.body;
+    const { email, phone, password, password_hash } = req.body;
+    const incomingPassword = password || password_hash;
+    
     if (!email && !phone) {
       return res.status(400).json({ success: false, message: 'Введіть Email або Номер телефону' });
     }
