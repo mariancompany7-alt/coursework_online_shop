@@ -32,12 +32,18 @@ function Login() {
         if (data.success) {
           setSuccess('Вхід успішний! Перенаправлення...');
 
-          if (response.data.success) {
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-          }
+          // ВИПРАВЛЕНО: Тепер використовуємо 'data', а не 'response.data'
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
 
-          setTimeout(() => navigate('/dashboard'), 2000);
+          // Перевіряємо роль користувача для правильного редіректу
+          setTimeout(() => {
+            if (data.user.role === 'admin') {
+              navigate('/admin');
+            } else {
+              navigate('/dashboard');
+            }
+          }, 2000);
         } else {
           setError(data.message || 'Невірний email або пароль');
         }

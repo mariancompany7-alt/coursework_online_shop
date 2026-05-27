@@ -10,24 +10,20 @@ export default function AdminUsers() {
       const res = await fetch('http://localhost:5000/api/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (res.ok) {
-        const data = await res.json();
-        setUsers(data);
-      }
+      if (res.ok) setUsers(await res.json());
     };
     fetchUsers();
   }, []);
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>База користувачів системи</h2>
+    <div className={styles.tabContainer}>
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Повне ім'я</th>
             <th>Електронна пошта</th>
             <th>Контактний телефон</th>
-            <th>Рівень доступу</th>
+            <th>Роль</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +33,7 @@ export default function AdminUsers() {
               <td>{u.email || '—'}</td>
               <td>{u.phone || '—'}</td>
               <td>
-                <span className={u.role === 'admin' ? styles.roleAdmin : styles.roleUser}>
+                <span style={{ color: u.role === 'admin' ? '#e74c3c' : '#2ecc71', fontWeight: 'bold' }}>
                   {u.role.toUpperCase()}
                 </span>
               </td>

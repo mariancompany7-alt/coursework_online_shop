@@ -1,35 +1,46 @@
+/* client/SmachnoBox/src/pages/Admin/AdminDashboard.module.css */
+
 .dashboardContainer {
   display: flex;
   height: 100vh;
-  background-color: #f5f6fa;
-  font-family: 'Arial', sans-serif;
+  background-color: #454545;
+  /* З вашого index.module.css */
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff;
 }
 
+/* Бічна панель = стиль вашого Header */
 .sidebar {
   width: 280px;
-  background-color: #1e272e;
+  background-color: #303030;
   color: #ffffff;
   display: flex;
   flex-direction: column;
   padding: 24px;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+  /* Тінь як у Header */
+  border-right: 1px solid #4a4a4a;
+  z-index: 10;
 }
 
 .logoArea {
   margin-bottom: 40px;
-  border-bottom: 1px solid #3d4852;
+  border-bottom: 1px solid #4a4a4a;
   padding-bottom: 20px;
 }
 
 .logoArea h2 {
   margin: 0;
-  font-size: 24px;
-  color: #ffc048;
+  font-size: 18px;
+  color: #56ab2f;
+  /* Фірмовий зелений */
+  font-weight: 700;
 }
 
 .badge {
-  font-size: 12px;
-  color: #88929b;
+  font-size: 14px;
+  color: #bdc3c7;
+  /* Світло-сірий з Main.module.css */
 }
 
 .navigation {
@@ -42,49 +53,63 @@
 .navBtn {
   background: none;
   border: none;
-  color: #ced6e0;
+  color: #ffffff;
   text-align: left;
-  padding: 14px 16px;
+  padding: 14px 20px;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 30px;
+  /* Заокруглення як у ваших кнопок */
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 200;
 }
 
+/* Ефект наведення як у вашій навігації */
 .navBtn:hover {
-  background-color: #2f3542;
-  color: #ffffff;
+  color: #56ab2f;
+  background-color: #3a3a3a;
 }
 
+/* Активна кнопка = стиль вашої кнопки .button */
 .activeBtn {
-  background-color: #ffc048 !important;
-  color: #1e272e !important;
-  font-weight: bold;
+  background-color: #56ab2f !important;
+  color: #ffffff !important;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .sidebarFooter {
-  border-top: 1px solid #3d4852;
+  border-top: 1px solid #4a4a4a;
   padding-top: 20px;
 }
 
 .adminName {
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #ffffff;
+  font-size: 16px;
+  padding-left: 10px;
 }
 
+/* Кнопка виходу з анімацією як у .button, але червона */
 .logoutBtn {
   width: 100%;
+  height: 40px;
   background-color: #ff4757;
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 6px;
+  border-radius: 30px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 800;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .logoutBtn:hover {
-  background-color: #ff6b81;
+  background-color: rgb(199, 30, 56);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
 .mainContent {
@@ -92,23 +117,31 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: #454545;
 }
 
+/* Верхня панель = стиль вашого Header */
 .header {
-  background-color: #ffffff;
-  padding: 20px 40px;
+  background-color: #303030;
+  padding: 0 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e1e8ed;
+  border-bottom: 1px solid #4a4a4a;
+  height: 80px;
+  /* Висота як у вашого Header */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  z-index: 5;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 22px;
-  color: #2f3542;
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 700;
 }
 
+/* Бейдж профілю = ТОЧНА копія вашого .profileLink */
 .profileBadge {
   background-color: #f1f2f6;
   padding: 8px 16px;

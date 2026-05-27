@@ -1,130 +1,120 @@
-.container {
-  background: #ffffff;
+.tabContainer {
+  background: #303030; /* Трохи темніший фон для контрасту з основною зоною #454545 */
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
 }
 
-.headerPanel {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.title {
-  margin: 0;
-  font-size: 22px;
-  color: #2d3436;
-  font-weight: 600;
-}
-
-/* Дизайн сучасних таблиць */
 .table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   text-align: left;
-  font-size: 15px;
 }
 
 .table th {
-  padding: 16px 12px;
-  background-color: #f8f9fa;
-  color: #636e72;
+  padding: 15px 12px;
+  background-color: #3a3a3a; /* Виділення шапки таблиці */
+  border-bottom: 2px solid #56ab2f; /* Фірмовий зелений акцент знизу шапки */
+  color: #bdc3c7; /* Світло-сірий текст */
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #edf2f7;
+  font-size: 13px;
 }
 
 .table td {
-  padding: 14px 12px;
-  border-bottom: 1px solid #edf2f7;
-  color: #2d3436;
+  padding: 15px 12px;
+  border-bottom: 1px solid #4a4a4a; /* Темний розділювач */
+  color: #ffffff;
   vertical-align: middle;
 }
 
 .table tr:hover td {
-  background-color: #fafbfc;
-}
-
-.colBold {
-  font-weight: 600;
-  color: #0984e3;
-}
-
-.colPrice {
-  font-weight: bold;
+  background-color: #383838; /* Легка підсвітка рядка при наведенні */
 }
 
 /* Форми та інпути */
 .formGroup {
   display: flex;
-  gap: 12px;
+  gap: 15px;
   margin-bottom: 25px;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #edf2f7;
+  background-color: #3a3a3a;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #4a4a4a;
 }
 
 .input {
-  padding: 10px 14px;
-  border: 1px solid #dfe6e9;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 10px 15px;
+  background-color: #454545; /* Темний фон інпута */
+  color: #ffffff;
+  border: 1px solid #555555;
+  border-radius: 8px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input::placeholder {
+  color: #888888;
 }
 
 .input:focus {
-  border-color: #74b9ff;
+  border-color: #56ab2f; /* Зелена рамка при активності */
+  box-shadow: 0 0 5px rgba(86, 171, 47, 0.5);
 }
 
-/* Універсальні кнопки */
+/* Кнопки */
 .btn {
-  padding: 10px 18px;
+  padding: 10px 20px;
   cursor: pointer;
   border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  border-radius: 30px; /* Заокруглення як у ваших основних кнопок */
+  background: #56ab2f; /* Фірмовий зелений замість синього */
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btnPrimary { background-color: #0984e3; color: white; }
-.btnPrimary:hover { background-color: #076bba; }
+.btn:hover {
+  background: #458a25;
+}
 
-.btnSecondary { background-color: #f1f2f6; color: #2d3436; border: 1px solid #dfe6e9; }
-.btnSecondary:hover { background-color: #dfe6e9; }
+.btnDanger { 
+  background: #ff4757; 
+}
+.btnDanger:hover { 
+  background: #ff6b81; 
+}
 
-.btnDanger { background-color: #ff7675; color: white; }
-.btnDanger:hover { background-color: #e15f5f; }
+.btnSecondary { 
+  background: #57606f; 
+}
+.btnSecondary:hover { 
+  background: #747d8c; 
+}
 
-/* Дизайн випадаючого списку (овальний бейдж) */
-.statusSelect {
-  padding: 6px 24px 6px 12px;
+/* Випадаючий список статусів */
+.select {
+  padding: 8px 12px;
   border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
+  border: 1px solid #4a4a4a;
+  font-weight: bold;
+  background-color: #454545;
+  color: #ffffff;
   cursor: pointer;
   outline: none;
-  border: 1px solid transparent;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23636e72' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
 }
 
-/* Кольори статусів відповідно до скриншоту */
-.status_pending { background-color: #ffeaa7; color: #826200; }
-.status_processing { background-color: #fab1a0; color: #8a3c2a; }
-.status_delivering { background-color: #81ecec; color: #006b6b; }
-.status_completed { background-color: #55efc4; color: #007054; }
-.status_cancelled { background-color: #dfe6e9; color: #636e72; }
+.actionsGroup {
+  display: flex;
+  gap: 10px; /* Відстань між кнопками */
+  flex-wrap: nowrap; /* Забороняємо перенос на новий рядок */
+  align-items: center;
+}
 
-/* Прості текстові ролі */
-.roleAdmin { color: #e74c3c; font-weight: bold; }
-.roleUser { color: #2ecc71; font-weight: bold; }
+/* Кольори статусів (адаптовані для читабельності) */
+.status_pending { background: #f39c12; color: #ffffff; border-color: #e67e22; }
+.status_processing { background: #d35400; color: #ffffff; border-color: #e67e22; }
+.status_delivering { background: #2980b9; color: #ffffff; border-color: #3498db; }
+.status_completed { background: #27ae60; color: #ffffff; border-color: #2ecc71; }
+.status_cancelled { background: #7f8c8d; color: #ffffff; border-color: #95a5a6; }

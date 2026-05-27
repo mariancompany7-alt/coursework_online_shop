@@ -43,7 +43,7 @@ function Dashboard() {
               <div>
                 <h2 className={styles.userName}>{user.full_name}</h2>
                 <span className={styles.roleBadge}>
-                  {user.role === 'admin' ? '👑 Адміністратор' : '👤 Клієнт'}
+                  {user.role === 'admin' ? 'Адміністратор' : 'Клієнт'}
                 </span>
               </div>
             </div>
@@ -69,7 +69,10 @@ function Dashboard() {
             <h3>🛒 Мої замовлення</h3>
             <p>Ви ще не зробили жодного замовлення.</p>
             {user.role === 'admin' && (
-              <button className={styles.adminBtn} onClick={() => alert('Тут буде перехід в Адмін Панель')}>
+              <button 
+                className={styles.adminBtn}
+                onClick={() => navigate('/admin')} 
+              >
                 Увійти в Адмін Панель
               </button>
             )}

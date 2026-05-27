@@ -1,46 +1,80 @@
-import React, { useState } from 'react';
-import AdminOrders from './tabs/AdminOrders';
+import React, { useState, useEffect } from 'react';
+import styles from './AdminDashboard.module.css';
+
 import AdminBoxes from './tabs/AdminBoxes';
+import AdminOrders from './tabs/AdminOrders';
 import AdminUsers from './tabs/AdminUsers';
-import styles from './tabs/AdminTabs.module.css';
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('orders');
+  const [activeTab, setActiveTab] = useState('boxes');
+  const [adminInfo, setAdminInfo] = useState(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setAdminInfo(JSON.parse(savedUser));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+  };
 
   return (
-    <div style={{ backgroundColor: '#f4f7f6', minHeight: '100vh', padding: '30px 20px' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        
-        {/* Горизонтальні вкладки зверху сторінки */}
-        <div className={styles.tabsContainer}>
+    <div className={styles.dashboardContainer}>
+      <aside className={styles.sidebar}>
+        <div className={styles.logoArea}>
+          <h2 className={styles.badge}>Панель керування</h2>
+        </div>
+
+        <nav className={styles.navigation}>
           <button 
-            className={`${styles.tabButton} ${activeTab === 'orders' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('orders')}
-          >
-            📦 Замовлення
-          </button>
-          <button 
-            className={`${styles.tabButton} ${activeTab === 'boxes' ? styles.activeTab : ''}`}
+            className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
             onClick={() => setActiveTab('boxes')}
           >
-            🍔 Каталог Боксів
+            📦 Товари та бокси
           </button>
+          
           <button 
-            className={`${styles.tabButton} ${activeTab === 'users' ? styles.activeTab : ''}`}
+            className={`${styles.navBtn} ${activeTab === 'orders' ? styles.activeBtn : ''}`}
+            onClick={() => setActiveTab('orders')}
+          >
+            📋 Замовлення
+          </button>
+          
+          <button 
+            className={`${styles.navBtn} ${activeTab === 'users' ? styles.activeBtn : ''}`}
             onClick={() => setActiveTab('users')}
           >
-            👥 Клієнти / Користувачі
+            👥 Користувачі
           </button>
-        </div>
+        </nav>
 
-        {/* Контент обраної вкладки */}
-        <div>
-          {activeTab === 'orders' && <AdminOrders />}
+        <div className={styles.sidebarFooter}>
+          <button onClick={handleLogout} className={styles.logoutBtn}>Вийти</button>
+        </div>
+      </aside>
+
+      <main className={styles.mainContent}>
+        <header className={styles.header}>
+          <h1>
+            {activeTab === 'boxes' && 'Керування каталогом товарів'}
+            {activeTab === 'orders' && 'Управління поточними замовленнями'}
+            {activeTab === 'users' && 'Список зареєстрованих користувачів'}
+          </h1>
+          <div className={styles.profileBadge}>
+            <span>{adminInfo?.email || 'admin@smachnobox.com'}</span>
+          </div>
+        </header>
+
+        <div className={styles.contentBody}>
           {activeTab === 'boxes' && <AdminBoxes />}
+          {activeTab === 'orders' && <AdminOrders />}
           {activeTab === 'users' && <AdminUsers />}
         </div>
-
-      </div>
+      </main>
     </div>
   );
 };
