@@ -24,50 +24,52 @@ const AdminDashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      <aside className={styles.sidebar}>
+      {/* Верхня шапка */}
+      <header className={styles.header}>
         <div className={styles.logoArea}>
-          <h2 className={styles.badge}>Панель керування</h2>
+          <h2>Панель керування</h2>
+          <span className={styles.badge}>SmachnoBox Admin</span>
         </div>
-
-        <nav className={styles.navigation}>
-          <button 
-            className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
-            onClick={() => setActiveTab('boxes')}
-          >
-            📦 Товари та бокси
-          </button>
-          
-          <button 
-            className={`${styles.navBtn} ${activeTab === 'orders' ? styles.activeBtn : ''}`}
-            onClick={() => setActiveTab('orders')}
-          >
-            📋 Замовлення
-          </button>
-          
-          <button 
-            className={`${styles.navBtn} ${activeTab === 'users' ? styles.activeBtn : ''}`}
-            onClick={() => setActiveTab('users')}
-          >
-            👥 Користувачі
-          </button>
-        </nav>
-
-        <div className={styles.sidebarFooter}>
+        
+        <div className={styles.headerRight}>
+          <div className={styles.profileBadge}>
+            <span>{adminInfo?.email || 'admin@smachnobox.com'}</span>
+          </div>
           <button onClick={handleLogout} className={styles.logoutBtn}>Вийти</button>
         </div>
-      </aside>
+      </header>
 
+      {/* Горизонтальне навігаційне меню */}
+      <nav className={styles.topNav}>
+        <button 
+          className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
+          onClick={() => setActiveTab('boxes')}
+        >
+          📦 Товари та бокси
+        </button>
+        <button 
+          className={`${styles.navBtn} ${activeTab === 'orders' ? styles.activeBtn : ''}`}
+          onClick={() => setActiveTab('orders')}
+        >
+          📋 Замовлення
+        </button>
+        <button 
+          className={`${styles.navBtn} ${activeTab === 'users' ? styles.activeBtn : ''}`}
+          onClick={() => setActiveTab('users')}
+        >
+          👥 Користувачі
+        </button>
+      </nav>
+
+      {/* Робоча область на всю ширину */}
       <main className={styles.mainContent}>
-        <header className={styles.header}>
+        <div className={styles.contentHeader}>
           <h1>
             {activeTab === 'boxes' && 'Керування каталогом товарів'}
             {activeTab === 'orders' && 'Управління поточними замовленнями'}
             {activeTab === 'users' && 'Список зареєстрованих користувачів'}
           </h1>
-          <div className={styles.profileBadge}>
-            <span>{adminInfo?.email || 'admin@smachnobox.com'}</span>
-          </div>
-        </header>
+        </div>
 
         <div className={styles.contentBody}>
           {activeTab === 'boxes' && <AdminBoxes />}

@@ -3,8 +3,8 @@ import Card from '../products/ProductCard/Card'
 import styles from './Main.module.css'
 
 function Main({ plans }) {
-
-  if (!plans) return <p>Loading plans...</p>;
+  // Перевірка наявності масиву перед рендерингом
+  if (!plans || !Array.isArray(plans)) return <p>Loading plans or error occurred...</p>;
   
   return (
     <div className={styles['main-wrapper']}>

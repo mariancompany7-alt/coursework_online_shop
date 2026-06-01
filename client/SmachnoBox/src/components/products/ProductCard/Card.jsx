@@ -1,16 +1,20 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import styles from './Card.module.css'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from './Card.module.css';
 
 function Card({ boxData }) {
-    const {
-        _id,
-        title,
-        description,
-        price,
-        image_url,
-        tags = []
-    } = boxData;
+    const { _id, title, description, price, image_url, tags = [], ingredients = [] } = boxData;
+    const navigate = useNavigate();
+    const [showDetails, setShowDetails] = useState(false);
+
+    // Підраховуємо загальну калорійність боксу
+    // (Припускаємо, що в моделі Ingredient є поле 'calories')
+    const totalCalories = ingredients.reduce((sum, item) => sum + (item.calories || 0), 0);
+
+    const handleOrderClick = () => {
+        // Переходимо на Checkout і передаємо дані цього конкретного боксу
+        navigate('/checkout', { state: { selectedBox: boxData } });
+    };
 
     return (
         <div className={styles.card}>
@@ -26,33 +30,44 @@ function Card({ boxData }) {
                     ))}
                 </div>
 
+                {/* Блок з деталями та калоріями */}
+                <div style={{ margin: '15px 0' }}>
+                    <button 
+                        onClick={() => setShowDetails(!showDetails)} 
+                        style={{ background: 'none', border: 'none', color: '#56ab2f', cursor: 'pointer', fontWeight: 'bold', padding: '0' }}
+                    >
+                        {showDetails ? '▲ Сховати склад' : '▼ Показати склад та калорії'}
+                    </button>
+                    
+                    {showDetails && (
+                        <div style={{ marginTop: '10px', fontSize: '14px', backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '8px', color: '#333' }}>
+                            <p style={{ margin: '0 0 10px 0' }}><strong>Загальна енергетична цінність:</strong> {totalCalories} ккал</p>
+                            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                {ingredients.length > 0 ? ingredients.map((ing) => (
+                                    <li key={ing._id}>
+                                        {ing.title || ing.name} — {ing.calories} ккал
+                                    </li>
+                                )) : <li>Склад ще формується</li>}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+
                 <div className={styles['card-details']}>
-                    {/* Статичні значення для полів, яких ще немає в БД */}
                     <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Страв на тиждень:</span>
-                        <span className={styles['detail-value']}>21</span>
+                        <span className={styles['detail-label']}>Страв у наборі:</span>
+                        <span className={styles['detail-value']}>{ingredients.length || 21}</span>
                     </div>
 
                     <div className={styles['detail-item']}>
                         <span className={styles['detail-label']}>Ціна:</span>
-                        {/* Форматування ціни */}
                         <span className={styles['detail-value']}>{price} ₴</span>
-                    </div>
-
-                    <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Доставка:</span>
-                        <span className={styles['detail-value']}>Щодня</span>
                     </div>
                 </div>
 
-                <Link to="/checkout" className={styles.secondaryButton}>
-                    <button
-                        className={styles['card-button']}
-                        onClick={() => console.log(`Замовлення боксу: ${_id}`)}>
-                        Замовити зараз
-                    </button>
-                </Link>
-
+                <button className={styles['card-button']} onClick={handleOrderClick} style={{ width: '100%', marginTop: '15px' }}>
+                    Замовити зараз
+                </button>
             </div>
         </div>
     );

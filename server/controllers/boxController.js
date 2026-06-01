@@ -1,9 +1,9 @@
 const Box = require('../models/Box');
+const Ingredient = require('../models/Ingredient');
 
-// Отримуємо всі бокси з бази даних
 exports.getAllBoxes = async (req, res) => {
     try {
-        const boxes = await Box.find(); // Шукає всі записи в колекції boxes
+        const boxes = await Box.find().populate('ingredients'); 
         res.status(200).json(boxes);
     } catch (error) {
         console.error('Помилка отримання боксів:', error);

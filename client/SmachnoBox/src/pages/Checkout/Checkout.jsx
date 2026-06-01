@@ -1,29 +1,66 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Checkout.module.css';
 
-function Checkout({ cartItems = [], totalAmount = 0 }) {
+// Прибираємо пропси cartItems та totalAmount, бо ми беремо їх з роутера
+function Checkout() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Отримуємо дані боксу, які передав компонент Card
+  const selectedBox = location.state?.selectedBox;
+
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    paymentMethod: 'cash',
-    comment: ''
+    name: '', phone: '', address: '', paymentMethod: 'cash', comment: ''
   });
+
+  // Якщо бокс передано, сума дорівнює його ціні. Інакше - 0.
+  const [totalAmount, setTotalAmount] = useState(selectedBox ? selectedBox.price : 0);
+  const [cartItems, setCartItems] = useState(selectedBox ? [selectedBox] : []);
+
+  useEffect(() => {
+    // Якщо користувач потрапив сюди не через кнопку "Замовити", а просто ввів URL
+    if (!selectedBox) {
+      alert("Кошик порожній! Оберіть бокс у каталозі.");
+      navigate('/');
+    }
+  }, [selectedBox, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Логіка відправки POST-запиту на бекенд для створення замовлення
-    console.log('Надіслано замовлення:', { ...formData, items: cartItems, totalAmount });
+    const token = localStorage.getItem('token');
     
-    alert('Дякуємо! Замовлення успішно оформлено.');
-    navigate('/dashboard'); // Перенаправлення в кабінет після успіху
+    // Формуємо об'єкт для бекенда (зверни увагу на поля, які очікує Order.js)
+    const orderPayload = {
+      total_amount: totalAmount,
+      delivery_address: { 
+        city: "Тернопіль", // Або парсити з formData.address
+        street: formData.address 
+      },
+      // Тут можна додати передачу items, якщо в схемі замовлення є таке поле
+    };
+
+    try {
+        const res = await fetch('http://localhost:5000/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify(orderPayload)
+        });
+
+        if (res.ok) {
+            alert('Дякуємо! Замовлення успішно оформлено.');
+            navigate('/dashboard'); 
+        } else {
+            alert('Помилка при оформленні замовлення.');
+        }
+    } catch (err) {
+        console.error(err);
+    }
   };
 
   return (
@@ -32,58 +69,29 @@ function Checkout({ cartItems = [], totalAmount = 0 }) {
         <h1 className={styles.pageTitle}>Оформлення замовлення</h1>
         
         <div className={styles.layout}>
-          {/* Ліва колонка: Форма з даними */}
+          {/* Форма з даними */}
           <form onSubmit={handleSubmit} className={styles.formSection}>
+             {/* ... твій попередній код полів форми (Ім'я, Телефон, Адреса тощо) залишається без змін ... */}
             <h2 className={styles.sectionTitle}>1. Дані для доставки</h2>
             
             <div className={styles.formGroup}>
               <label htmlFor="name">Ім'я та прізвище отримувача</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                placeholder="Введіть повне ім'я"
-                value={formData.name}
-                onChange={handleChange}
-              />
+              <input type="text" id="name" name="name" required placeholder="Введіть повне ім'я" value={formData.name} onChange={handleChange} />
             </div>
 
             <div className={styles.formGroup}>
               <label htmlFor="phone">Контактний номер телефону</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                required
-                placeholder="+380"
-                value={formData.phone}
-                onChange={handleChange}
-              />
+              <input type="tel" id="phone" name="phone" required placeholder="+380" value={formData.phone} onChange={handleChange} />
             </div>
 
             <div className={styles.formGroup}>
               <label htmlFor="address">Адреса доставки</label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                required
-                placeholder="Місто, вулиця, будинок, квартира"
-                value={formData.address}
-                onChange={handleChange}
-              />
+              <input type="text" id="address" name="address" required placeholder="Місто, вулиця, будинок, квартира" value={formData.address} onChange={handleChange} />
             </div>
 
             <h2 className={styles.sectionTitle}>2. Спосіб оплати</h2>
             <div className={styles.formGroup}>
-              <select
-                id="paymentMethod"
-                name="paymentMethod"
-                value={formData.paymentMethod}
-                onChange={handleChange}
-                className={styles.selectInput}
-              >
+              <select id="paymentMethod" name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} className={styles.selectInput}>
                 <option value="cash">Готівкою кур'єру при отриманні</option>
                 <option value="card">Карткою онлайн на сайті</option>
                 <option value="crypto">Криптовалюта (USDT)</option>
@@ -92,35 +100,34 @@ function Checkout({ cartItems = [], totalAmount = 0 }) {
 
             <h2 className={styles.sectionTitle}>3. Додатково</h2>
             <div className={styles.formGroup}>
-              <label htmlFor="comment">Коментар до замовлення (необов'язково)</label>
-              <textarea
-                id="comment"
-                name="comment"
-                rows="4"
-                placeholder="Побажання щодо часу доставки, коду домофону тощо..."
-                value={formData.comment}
-                onChange={handleChange}
-              />
+              <label htmlFor="comment">Коментар до замовлення</label>
+              <textarea id="comment" name="comment" rows="4" placeholder="Побажання щодо часу..." value={formData.comment} onChange={handleChange} />
             </div>
           </form>
 
-          {/* Права колонка: Ваше замовлення (Summary) */}
+          {/* Ваше замовлення (Summary) */}
           <aside className={styles.summarySection}>
             <h2 className={styles.summaryTitle}>Ваше замовлення</h2>
             
-            {/* Тут можна зробити маппінг страв, якщо cartItems не порожній */}
             <div className={styles.itemsList}>
-              <p className={styles.emptyCartNotice}>Резюме обраних позицій раціону</p>
+              {cartItems.length > 0 ? cartItems.map((item, idx) => (
+                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #eee', paddingBottom: '10px', marginBottom: '10px' }}>
+                      <span style={{ fontWeight: 'bold' }}>{item.title}</span>
+                      <span>{item.price} ₴</span>
+                  </div>
+              )) : (
+                  <p className={styles.emptyCartNotice}>Резюме обраних позицій раціону</p>
+              )}
             </div>
 
             <div className={styles.priceSummary}>
               <div className={styles.summaryRow}>
                 <span>Доставка:</span>
-                <span className={styles.freeDelivery}>Безкоштовно</span>
+                <span className={styles.freeDelivery} style={{ color: '#56ab2f', fontWeight: 'bold' }}>Безкоштовно</span>
               </div>
-              <div className={styles.totalRow}>
+              <div className={styles.totalRow} style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '15px' }}>
                 <span>Разом до сплати:</span>
-                <span className={styles.totalPrice}>{totalAmount} грн</span>
+                <span className={styles.totalPrice}>{totalAmount} ₴</span>
               </div>
             </div>
 
@@ -138,5 +145,5 @@ function Checkout({ cartItems = [], totalAmount = 0 }) {
     </main>
   );
 }
-
+ 
 export default Checkout;
