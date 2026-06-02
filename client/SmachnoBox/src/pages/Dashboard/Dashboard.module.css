@@ -14,7 +14,6 @@
   font-size: 32px;
   margin-bottom: 40px;
   color: #ffffff;
-  border-left: 4px solid #56ab2f; /* Зелена лінія зліва */
   padding-left: 16px;
 }
 
@@ -143,6 +142,146 @@
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+}
+
+/* =========================================
+   СТИЛІ ДЛЯ БЛОКУ ЗАМОВЛЕНЬ
+========================================= */
+
+.ordersCard {
+  background-color: #303030; /* Основний фон прямокутника */
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #4a4a4a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  box-sizing: border-box; /* Гарантує, що padding не виходить за межі ширини */
+}
+
+.ordersTitle {
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #4a4a4a;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: left;
+}
+
+.emptyOrders {
+  color: #888888;
+  font-size: 16px;
+}
+
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.orderItem {
+  background-color: #3a3a3a; /* Трохи світліший сірий для самої картки замовлення */
+  padding: 18px;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.orderItem:hover {
+  background-color: #404040;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Дозволяє перенесення на новий рядок при браку місця */
+  gap: 10px;
+}
+
+.orderId {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.orderStatusBadge {
+  background-color: #4a4a4a; /* Нейтральний темно-сірий фон */
+  color: #e0e0e0; /* Світлий текст */
+  padding: 6px 12px;
+  border-left: none;
+  border-right: none;
+  border-radius: 6px; /* Класичні заокруглення замість "таблетки" */
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid #5a5a5a;
+}
+
+.orderDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  color: #e0e0e0;
+}
+
+.orderRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.orderRow strong {
+  color: #ffffff;
+  min-width: 65px; /* Фіксована ширина для вирівнювання тексту "Сума:" та "Адреса:" */
+}
+
+/* === Макет спеціально для Адміністратора (центрування) === */
+.adminLayout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.adminLayout .profileCard {
+  width: 100%;
+  max-width: 350px; /* Обмежуємо ширину, щоб картка не розтяглася на весь екран */
+}
+
+/* Центрування головного заголовка для Адміністратора */
+.adminTitle {
+  text-align: center;
+}
+
+/* =========================================
+   АДАПТИВНІСТЬ (МЕДІАЗАПИТИ)
+========================================= */
+
+@media screen and (max-width: 600px) {
+  .ordersCard {
+    padding: 20px 15px; /* Менші відступи головного контейнера */
+  }
+  
+  .orderItem {
+    padding: 15px; /* Менші внутрішні відступи самої картки */
+  }
+  
+  .orderHeader {
+    flex-direction: column; /* Ставимо бейдж під номером замовлення на вузьких екранах */
+    align-items: flex-start;
+  }
+  
+  .orderRow {
+    flex-direction: column; /* Сума і адреса переносяться під свої заголовки */
+    gap: 4px;
+  }
 }
 
 /* Адаптивність */

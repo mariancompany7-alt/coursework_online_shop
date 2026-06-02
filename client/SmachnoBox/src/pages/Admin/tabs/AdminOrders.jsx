@@ -8,15 +8,15 @@ export default function AdminOrders() {
   const loadOrders = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/orders', { 
-        headers: { Authorization: `Bearer ${token}` } 
+      const res = await fetch('http://localhost:5000/api/orders', {
+        headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       if (!res.ok) {
         const errData = await res.json();
         throw new Error(errData.message || `Помилка HTTP: ${res.status}`);
       }
-      
+
       const data = await res.json();
       // Перевірка, чи бекенд дійсно повернув масив
       if (Array.isArray(data)) {
@@ -36,7 +36,7 @@ export default function AdminOrders() {
   const changeStatus = async (id, status) => {
     try {
       const token = localStorage.getItem('token');
-      
+
       // УВАГА: Якщо в orderRoutes.js у тебе написано router.put('/:id', ...), 
       // то забери /status з кінця цього URL!
       const res = await fetch(`http://localhost:5000/api/orders/${id}/status`, {
@@ -44,7 +44,7 @@ export default function AdminOrders() {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status })
       });
-      
+
       if (!res.ok) throw new Error("Не вдалося оновити статус");
       loadOrders();
     } catch (err) {
@@ -56,8 +56,8 @@ export default function AdminOrders() {
     if (!window.confirm("Видалити замовлення?")) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/orders/${id}`, { 
-        method: 'DELETE', headers: { Authorization: `Bearer ${token}` } 
+      const res = await fetch(`http://localhost:5000/api/orders/${id}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) loadOrders();
     } catch (err) {
@@ -89,13 +89,13 @@ export default function AdminOrders() {
             {orders.map(o => (
               <tr key={o._id}>
                 <td>{new Date(o.createdAt).toLocaleDateString('uk-UA')}</td>
-                <td>{o.user_id?.full_name || 'Гість'}<br/><small>{o.user_id?.phone}</small></td>
+                <td>{o.user_id?.full_name || 'Гість'}<br /><small>{o.user_id?.phone}</small></td>
                 <td>{o.delivery_address ? `м. ${o.delivery_address.city}, вул. ${o.delivery_address.street}` : '—'}</td>
                 <td><b>{o.total_amount} ₴</b></td>
                 <td>
-                  <select 
-                    className={`${styles.select} ${styles[`status_${o.status}`]}`}
-                    value={o.status} 
+                  <select
+                    className={styles.statusSelect}
+                    value={o.status}
                     onChange={e => changeStatus(o._id, e.target.value)}
                   >
                     <option value="pending">Очікує</option>

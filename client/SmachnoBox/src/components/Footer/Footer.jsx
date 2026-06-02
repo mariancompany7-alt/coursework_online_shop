@@ -44,7 +44,7 @@ function Footer() {
       </div>
 
       <div className={styles.copyright}>
-        <p>© 2025 SmachnoBox. Всі права захищені.</p>
+        <p>© 2026 SmachnoBox. Всі права захищені.</p>
       </div>
     </footer>
   );

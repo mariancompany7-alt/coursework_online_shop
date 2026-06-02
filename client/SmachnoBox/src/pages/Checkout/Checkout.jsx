@@ -2,47 +2,58 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Checkout.module.css';
 
-// Прибираємо пропси cartItems та totalAmount, бо ми беремо їх з роутера
 function Checkout() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Отримуємо дані боксу, які передав компонент Card
   const selectedBox = location.state?.selectedBox;
 
   const [formData, setFormData] = useState({
     name: '', phone: '', address: '', paymentMethod: 'cash', comment: ''
   });
 
-  // Якщо бокс передано, сума дорівнює його ціні. Інакше - 0.
-  const [totalAmount, setTotalAmount] = useState(selectedBox ? selectedBox.price : 0);
-  const [cartItems, setCartItems] = useState(selectedBox ? [selectedBox] : []);
+  // Додаємо стан для кількості наборів (за замовчуванням 1)
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    // Якщо користувач потрапив сюди не через кнопку "Замовити", а просто ввів URL
     if (!selectedBox) {
-      alert("Кошик порожній! Оберіть бокс у каталозі.");
-      navigate('/');
+      navigate('/'); 
     }
   }, [selectedBox, navigate]);
+
+  if (!selectedBox) return null;
+
+  // Динамічний підрахунок суми
+  const totalAmount = selectedBox.price * quantity;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Функція для зміни кількості
+  const handleQuantityChange = (delta) => {
+    setQuantity(prev => {
+      const newQuantity = prev + delta;
+      return newQuantity > 0 ? newQuantity : 1; // Забороняємо замовляти менше 1 шт
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     
-    // Формуємо об'єкт для бекенда (зверни увагу на поля, які очікує Order.js)
     const orderPayload = {
       total_amount: totalAmount,
       delivery_address: { 
-        city: "Тернопіль", // Або парсити з formData.address
+        city: "Тернопіль", 
         street: formData.address 
       },
-      // Тут можна додати передачу items, якщо в схемі замовлення є таке поле
+      items: [{
+        box_id: selectedBox._id,
+        quantity: quantity, 
+        price: selectedBox.price
+      }]
     };
 
     try {
@@ -53,13 +64,16 @@ function Checkout() {
         });
 
         if (res.ok) {
-            alert('Дякуємо! Замовлення успішно оформлено.');
             navigate('/dashboard'); 
+        } else if (res.status === 401) {
+            localStorage.removeItem('token');
+            navigate('/login');
         } else {
-            alert('Помилка при оформленні замовлення.');
+            const errorData = await res.json();
+            alert(`Помилка: ${errorData.message}`);
         }
     } catch (err) {
-        console.error(err);
+        console.error("Помилка мережі:", err);
     }
   };
 
@@ -69,9 +83,8 @@ function Checkout() {
         <h1 className={styles.pageTitle}>Оформлення замовлення</h1>
         
         <div className={styles.layout}>
-          {/* Форма з даними */}
+          {/* Ліва колонка: Форма */}
           <form onSubmit={handleSubmit} className={styles.formSection}>
-             {/* ... твій попередній код полів форми (Ім'я, Телефон, Адреса тощо) залишається без змін ... */}
             <h2 className={styles.sectionTitle}>1. Дані для доставки</h2>
             
             <div className={styles.formGroup}>
@@ -105,27 +118,32 @@ function Checkout() {
             </div>
           </form>
 
-          {/* Ваше замовлення (Summary) */}
+          {/* Права колонка: Резюме */}
           <aside className={styles.summarySection}>
             <h2 className={styles.summaryTitle}>Ваше замовлення</h2>
             
             <div className={styles.itemsList}>
-              {cartItems.length > 0 ? cartItems.map((item, idx) => (
-                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #eee', paddingBottom: '10px', marginBottom: '10px' }}>
-                      <span style={{ fontWeight: 'bold' }}>{item.title}</span>
-                      <span>{item.price} ₴</span>
-                  </div>
-              )) : (
-                  <p className={styles.emptyCartNotice}>Резюме обраних позицій раціону</p>
-              )}
+              <div className={styles.cartItem}>
+                <div className={styles.itemInfo}>
+                  <span className={styles.itemName}>{selectedBox.title || selectedBox.name}</span>
+                  <span className={styles.itemPrice}>{selectedBox.price} ₴ / набір</span>
+                </div>
+                
+                {/* Блок вибору кількості */}
+                <div className={styles.quantityControl}>
+                  <button type="button" onClick={() => handleQuantityChange(-1)}>-</button>
+                  <span>{quantity}</span>
+                  <button type="button" onClick={() => handleQuantityChange(1)}>+</button>
+                </div>
+              </div>
             </div>
 
             <div className={styles.priceSummary}>
               <div className={styles.summaryRow}>
                 <span>Доставка:</span>
-                <span className={styles.freeDelivery} style={{ color: '#56ab2f', fontWeight: 'bold' }}>Безкоштовно</span>
+                <span className={styles.freeDelivery}>Безкоштовно</span>
               </div>
-              <div className={styles.totalRow} style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '15px' }}>
+              <div className={styles.totalRow}>
                 <span>Разом до сплати:</span>
                 <span className={styles.totalPrice}>{totalAmount} ₴</span>
               </div>
@@ -145,5 +163,5 @@ function Checkout() {
     </main>
   );
 }
- 
+
 export default Checkout;

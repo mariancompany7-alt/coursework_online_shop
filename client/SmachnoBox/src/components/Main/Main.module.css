@@ -30,6 +30,101 @@
   padding: 0 20px;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px); /* Легке розмиття заднього фону */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Поверх усього сайту */
+  animation: fadeInModal 0.3s ease;
+}
+
+/* Сама карточка повідомлення */
+.modalContent {
+  background-color: #303030;
+  padding: 40px 30px;
+  border-radius: 16px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border: 1px solid #4a4a4a;
+  animation: slideUpModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Ефект легкого підстрибування */
+}
+
+.modalIcon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.modalContent h2 {
+  color: #ffffff;
+  margin: 0 0 15px 0;
+  font-size: 24px;
+}
+
+.modalContent p {
+  color: #bdc3c7;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Кнопки */
+.modalActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loginBtn {
+  background-color: #56ab2f;
+  color: white;
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.loginBtn:hover {
+  background-color: #458a25;
+}
+
+.closeBtn {
+  background: none;
+  border: 1px solid #555;
+  color: #aaa;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.closeBtn:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Анімації */
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpModal {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* =========================================
    АДАПТИВНІСТЬ (МЕДІАЗАПИТИ)
 ========================================= */

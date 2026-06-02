@@ -1,18 +1,10 @@
-/* global use, db */
+/* global use, db, ObjectId */
 // MongoDB Playground
-// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
-// Make sure you are connected to enable completions and to be able to run a playground.
-// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
-// The result of the last command run in a playground is shown on the results panel.
-// By default the first 20 documents will be returned with a cursor.
-// Use 'console.log()' to print to the debug output.
-// For more documentation on playgrounds please refer to
-// https://www.mongodb.com/docs/mongodb-vscode/playgrounds/
 
-// Select the database to use.
 // Вибір вашої бази даних
 use('smachnobox_db');
 
+// Робимо користувача адміном (якщо він існує)
 db.users.updateOne(
   { email: "admin@gmail.com" }, 
   { $set: { role: "admin" } }
@@ -28,7 +20,14 @@ const broccoliId = new ObjectId();
 const quinoaId = new ObjectId();
 const tofuId = new ObjectId();
 
-// 2. Завантажуємо Інгредієнти (вони вже були українською)
+// --- Нові інгредієнти ---
+const salmonId = new ObjectId();
+const sweetPotatoId = new ObjectId();
+const avocadoId = new ObjectId();
+const beefId = new ObjectId();
+const buckwheatId = new ObjectId();
+
+// 2. Завантажуємо розширений список інгредієнтів
 db.ingredients.insertMany([
   {
     _id: chickenId,
@@ -65,35 +64,96 @@ db.ingredients.insertMany([
     weight_grams: 120,
     nutritional_value: { calories: 144, protein: 15, fat: 8, carbs: 3 },
     is_available: true
+  },
+  {
+    _id: salmonId,
+    name: "Філе лосося на пару",
+    category: "Риба",
+    price: 150,
+    weight_grams: 130,
+    nutritional_value: { calories: 208, protein: 22, fat: 13, carbs: 0 },
+    is_available: true
+  },
+  {
+    _id: sweetPotatoId,
+    name: "Запечений батат",
+    category: "Гарніри",
+    price: 50,
+    weight_grams: 150,
+    nutritional_value: { calories: 135, protein: 2.4, fat: 0.2, carbs: 31 },
+    is_available: true
+  },
+  {
+    _id: avocadoId,
+    name: "Слайси авокадо",
+    category: "Овочі",
+    price: 60,
+    weight_grams: 50,
+    nutritional_value: { calories: 80, protein: 1, fat: 7.5, carbs: 4 },
+    is_available: true
+  },
+  {
+    _id: beefId,
+    name: "Томлена телятина",
+    category: "М'ясо",
+    price: 110,
+    weight_grams: 150,
+    nutritional_value: { calories: 210, protein: 28, fat: 11, carbs: 0 },
+    is_available: true
+  },
+  {
+    _id: buckwheatId,
+    name: "Відварна гречка",
+    category: "Гарніри",
+    price: 30,
+    weight_grams: 150,
+    nutritional_value: { calories: 140, protein: 5, fat: 1, carbs: 27 },
+    is_available: true
   }
 ]);
 
-// 3. Завантажуємо готові Бокси (перекладені + локальні картинки)
+// 3. Завантажуємо 5 готових Боксів з локальними картинками
 db.boxes.insertMany([
   {
     title: 'Набір "Свіжий старт"',
     description: 'Збалансовані сніданки, обіди та вечері з нежирним білком і сезонними овочами.',
     price: 850.00,
-    image_url: '/images/1.webp', // Ваш локальний файл
+    image_url: '/images/1.webp',
     tags: ['Високий вміст білка', 'Мінімум цукру', 'Свіжі продукти'],
-    ingredients: [chickenId, broccoliId]
+    ingredients: [chickenId, broccoliId, buckwheatId]
   },
   {
     title: 'Набір "Зелена енергія"',
     description: 'Рослинний раціон, створений для підвищення енергії та підтримки здорового способу життя.',
     price: 790.00,
-    image_url: '/images/2.webp', // Ваш локальний файл
+    image_url: '/images/2.webp',
     tags: ['Вегетаріанський', 'Багато клітковини', 'Суперфуди'],
-    ingredients: [tofuId, quinoaId, broccoliId]
+    ingredients: [tofuId, quinoaId, broccoliId, avocadoId]
   },
   {
     title: 'Набір "Детокс баланс"',
     description: 'Легкі, очищуючі страви з корисними для детоксу продуктами та поживними бульйонами.',
     price: 820.00,
-    image_url: '/images/3.webp', // Ваш локальний файл
+    image_url: '/images/3.webp',
     tags: ['Підтримка детоксу', 'Без глютену', 'Низькокалорійний'],
-    ingredients: [broccoliId, quinoaId]
+    ingredients: [broccoliId, quinoaId, avocadoId]
+  },
+  {
+    title: 'Набір "Омега-3 Заряд"',
+    description: 'Преміальний набір із червоною рибою, бататом та корисними жирами для мозкової активності.',
+    price: 1250.00,
+    image_url: '/images/4.webp',
+    tags: ['Преміум', 'Омега-3', 'Кето-френдлі'],
+    ingredients: [salmonId, sweetPotatoId, broccoliId]
+  },
+  {
+    title: 'Набір "Силове меню"',
+    description: 'Раціон для спортсменів з підвищеним вмістом тваринного білка та складних вуглеводів для набору маси.',
+    price: 980.00,
+    image_url: '/images/5.webp',
+    tags: ['Для спортсменів', 'Масонабір', 'Ситний'],
+    ingredients: [beefId, chickenId, buckwheatId]
   }
 ]);
 
-console.log("✅ Україномовні бокси з локальними картинками успішно завантажено!");
+console.log("✅ 5 Україномовних боксів з новими інгредієнтами успішно завантажено!");

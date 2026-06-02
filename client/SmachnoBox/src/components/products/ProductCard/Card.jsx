@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Card.module.css';
 
-function Card({ boxData }) {
+// 1. Додаємо пропс onRequireAuth
+function Card({ boxData, onRequireAuth }) {
     const { _id, title, description, price, image_url, tags = [], ingredients = [] } = boxData;
     const navigate = useNavigate();
     const [showDetails, setShowDetails] = useState(false);
@@ -10,7 +11,21 @@ function Card({ boxData }) {
     const totalCalories = ingredients.reduce((sum, item) => sum + (item.nutritional_value?.calories || 0), 0);
 
     const handleOrderClick = () => {
-        // Переходимо на Checkout і передаємо дані цього конкретного боксу
+        const token = localStorage.getItem('token');
+        const userString = localStorage.getItem('user');
+
+        if (!token || !userString) {
+            if (onRequireAuth) onRequireAuth();
+            return;
+        }
+
+        const user = JSON.parse(userString);
+        if (user.role === 'admin') {
+            // 2. Замість alert викликаємо функцію, яка відкриє вікно
+            if (onAdminWarning) onAdminWarning();
+            return;
+        }
+
         navigate('/checkout', { state: { selectedBox: boxData } });
     };
 
@@ -28,8 +43,7 @@ function Card({ boxData }) {
                     ))}
                 </div>
 
-                {/* Блок з деталями та калоріями */}
-                <div className={styles['ingredients-section']} style={{ margin: '15px 0' }}>
+                <div className={styles['ingredients-section']}>
                     <button
                         className={styles['details-toggle']}
                         onClick={() => setShowDetails(!showDetails)}
@@ -59,14 +73,14 @@ function Card({ boxData }) {
                         <span className={styles['detail-label']}>Страв у наборі:</span>
                         <span className={styles['detail-value']}>{ingredients.length || 21}</span>
                     </div>
-
                     <div className={styles['detail-item']}>
                         <span className={styles['detail-label']}>Ціна:</span>
                         <span className={styles['detail-value']}>{price} ₴</span>
                     </div>
                 </div>
 
-                <button className={styles['card-button']} onClick={handleOrderClick} style={{ width: '100%', marginTop: '15px' }}>
+                {/* 3. Кнопка стала чистою */}
+                <button className={styles['card-button']} onClick={handleOrderClick} style={{ width: '100%', marginTop: '10px' }}>
                     Замовити зараз
                 </button>
             </div>

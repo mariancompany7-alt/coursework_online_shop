@@ -118,3 +118,37 @@
 .status_delivering { background: #2980b9; color: #ffffff; border-color: #3498db; }
 .status_completed { background: #27ae60; color: #ffffff; border-color: #2ecc71; }
 .status_cancelled { background: #7f8c8d; color: #ffffff; border-color: #95a5a6; }
+
+/* =========================================
+   СТИЛІ ДЛЯ СЕЛЕКТА СТАТУСІВ (Сіро-голубий)
+========================================= */
+
+.statusSelect {
+  background-color: #607d8b; /* Благородний сіро-голубий колір */
+  color: #ffffff;
+  border: 1px solid #4f6a77;
+  padding: 8px 14px;
+  border-radius: 8px; /* Акуратна заокруглена форма */
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  min-width: 140px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ефект при наведенні та кліку */
+.statusSelect:hover, 
+.statusSelect:focus {
+  background-color: #546e7a; /* Трохи темніший відтінок при взаємодії */
+  border-color: #819ca9;
+}
+
+/* Стиль для пунктів меню всередині випадаючого списку */
+.statusSelect option {
+  background-color: #303030; /* Темний фон під загальний стиль адмінки */
+  color: #ffffff;
+  padding: 10px;
+}
