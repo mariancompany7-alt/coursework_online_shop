@@ -1,8 +1,10 @@
 const Box = require('../models/Box');
-const Ingredient = require('../models/Ingredient');
+const Ingredient = require('../models/Ingredient'); // Обов'язково додаємо імпорт моделі Ingredient
 
+// Отримуємо всі бокси з бази даних
 exports.getAllBoxes = async (req, res) => {
     try {
+        // Додаємо .populate('ingredients'), щоб отримати повні об'єкти замість ID
         const boxes = await Box.find().populate('ingredients'); 
         res.status(200).json(boxes);
     } catch (error) {

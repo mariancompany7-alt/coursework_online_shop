@@ -6,24 +6,64 @@
 .section-header {
   text-align: center;
   margin-bottom: 50px;
+  padding: 0 20px; /* Захист від прилипання тексту до країв екрану */
 }
 
 .section-header h1 {
   font-size: 36px;
-  color: #ffffff; /* Білий заголовок */
+  color: #ffffff;
   margin-bottom: 15px;
 }
 
 .section-header p {
   font-size: 18px;
-  color: #bdc3c7; /* Світло-сірий */
+  color: #bdc3c7;
 }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* Зменшено мінімальну ширину з 300px до 280px для кращого розміщення на вузьких екранах */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+/* =========================================
+   АДАПТИВНІСТЬ (МЕДІАЗАПИТИ)
+========================================= */
+
+/* Для планшетів та великих телефонів (до 768px) */
+@media screen and (max-width: 768px) {
+  .main-wrapper {
+    padding: 50px 0; /* Зменшуємо вертикальні відступи секції */
+  }
+
+  .section-header {
+    margin-bottom: 35px;
+  }
+
+  .section-header h1 {
+    font-size: 28px; /* Зменшуємо головний заголовок */
+  }
+
+  .cards-grid {
+    gap: 20px; /* Зменшуємо відстань між картками */
+  }
+}
+
+/* Для маленьких мобільних екранів (до 480px) */
+@media screen and (max-width: 480px) {
+  .section-header h1 {
+    font-size: 24px;
+  }
+  
+  .section-header p {
+    font-size: 15px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr; /* Одна картка в ряд на всю ширину екрану */
+  }
 }

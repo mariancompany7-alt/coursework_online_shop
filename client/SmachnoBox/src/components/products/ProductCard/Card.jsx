@@ -7,9 +7,7 @@ function Card({ boxData }) {
     const navigate = useNavigate();
     const [showDetails, setShowDetails] = useState(false);
 
-    // Підраховуємо загальну калорійність боксу
-    // (Припускаємо, що в моделі Ingredient є поле 'calories')
-    const totalCalories = ingredients.reduce((sum, item) => sum + (item.calories || 0), 0);
+    const totalCalories = ingredients.reduce((sum, item) => sum + (item.nutritional_value?.calories || 0), 0);
 
     const handleOrderClick = () => {
         // Переходимо на Checkout і передаємо дані цього конкретного боксу
@@ -31,21 +29,24 @@ function Card({ boxData }) {
                 </div>
 
                 {/* Блок з деталями та калоріями */}
-                <div style={{ margin: '15px 0' }}>
-                    <button 
-                        onClick={() => setShowDetails(!showDetails)} 
-                        style={{ background: 'none', border: 'none', color: '#56ab2f', cursor: 'pointer', fontWeight: 'bold', padding: '0' }}
+                <div className={styles['ingredients-section']} style={{ margin: '15px 0' }}>
+                    <button
+                        className={styles['details-toggle']}
+                        onClick={() => setShowDetails(!showDetails)}
                     >
                         {showDetails ? '▲ Сховати склад' : '▼ Показати склад та калорії'}
                     </button>
-                    
+
                     {showDetails && (
-                        <div style={{ marginTop: '10px', fontSize: '14px', backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '8px', color: '#333' }}>
-                            <p style={{ margin: '0 0 10px 0' }}><strong>Загальна енергетична цінність:</strong> {totalCalories} ккал</p>
-                            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                        <div className={styles['details-container']}>
+                            <p className={styles['details-calories']}>
+                                <span>Енергетична цінність:</span>
+                                <span className={styles['details-calories-value']}>{totalCalories} ккал</span>
+                            </p>
+                            <ul className={styles['details-list']}>
                                 {ingredients.length > 0 ? ingredients.map((ing) => (
                                     <li key={ing._id}>
-                                        {ing.title || ing.name} — {ing.calories} ккал
+                                        {ing.name} <span className={styles['item-calories']}>— {ing.nutritional_value?.calories || 0} ккал</span>
                                     </li>
                                 )) : <li>Склад ще формується</li>}
                             </ul>
