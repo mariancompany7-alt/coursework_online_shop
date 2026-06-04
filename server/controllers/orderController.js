@@ -8,13 +8,15 @@ exports.createOrder = async (req, res) => {
       return res.status(403).json({ message: 'Адміністратори не можуть оформлювати замовлення як клієнти.' });
     }
 
-    const { delivery_address, total_amount, items } = req.body;
+    const { delivery_address, total_amount, items, payment_method, payment_status } = req.body;
 
     const newOrder = new Order({
       user_id: req.user._id,
       delivery_address,
       total_amount,
-      items
+      items,
+      payment_method, // Зберігаємо метод оплати
+      payment_status
     });
 
     const savedOrder = await newOrder.save();

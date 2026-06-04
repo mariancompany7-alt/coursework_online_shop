@@ -45,19 +45,19 @@ const AdminDashboard = () => {
           className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
           onClick={() => setActiveTab('boxes')}
         >
-          📦 Товари та бокси
+          Товари та бокси
         </button>
         <button 
           className={`${styles.navBtn} ${activeTab === 'orders' ? styles.activeBtn : ''}`}
           onClick={() => setActiveTab('orders')}
         >
-          📋 Замовлення
+          Замовлення
         </button>
         <button 
           className={`${styles.navBtn} ${activeTab === 'users' ? styles.activeBtn : ''}`}
           onClick={() => setActiveTab('users')}
         >
-          👥 Користувачі
+          Користувачі
         </button>
       </nav>
 

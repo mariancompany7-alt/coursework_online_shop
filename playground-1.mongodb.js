@@ -10,7 +10,7 @@ db.users.updateOne(
   { $set: { role: "admin" } }
 );
 
-// Очищення колекцій перед завантаженням нових даних
+// Очищення колекцій перед завантаженням нових даних (повне видалення старих карток)
 db.boxes.drop();
 db.ingredients.drop();
 
@@ -19,13 +19,12 @@ const chickenId = new ObjectId();
 const broccoliId = new ObjectId();
 const quinoaId = new ObjectId();
 const tofuId = new ObjectId();
-
-// --- Нові інгредієнти ---
 const salmonId = new ObjectId();
 const sweetPotatoId = new ObjectId();
 const avocadoId = new ObjectId();
 const beefId = new ObjectId();
 const buckwheatId = new ObjectId();
+const shrimpId = new ObjectId();
 
 // 2. Завантажуємо розширений список інгредієнтів
 db.ingredients.insertMany([
@@ -109,51 +108,68 @@ db.ingredients.insertMany([
     weight_grams: 150,
     nutritional_value: { calories: 140, protein: 5, fat: 1, carbs: 27 },
     is_available: true
+  },
+  {
+    _id: shrimpId,
+    name: "Тигрові креветки гриль",
+    category: "Морепродукти",
+    price: 180,
+    weight_grams: 100,
+    nutritional_value: { calories: 99, protein: 24, fat: 0.3, carbs: 0.2 },
+    is_available: true
   }
 ]);
 
-// 3. Завантажуємо 5 готових Боксів з локальними картинками
+// 3. Завантажуємо 6 готових Боксів із скороченими тегами
 db.boxes.insertMany([
   {
     title: 'Набір "Свіжий старт"',
-    description: 'Збалансовані сніданки, обіди та вечері з нежирним білком і сезонними овочами.',
-    price: 850.00,
+    description: 'Оптимізований базовий раціон із розрахованим балансом макронутрієнтів. Забезпечує стабільний рівень глюкози завдяки складним вуглеводам.',
+    price: 550.00,
     image_url: '/images/1.webp',
-    tags: ['Високий вміст білка', 'Мінімум цукру', 'Свіжі продукти'],
+    tags: ['Збалансований'],
     ingredients: [chickenId, broccoliId, buckwheatId]
   },
   {
-    title: 'Набір "Зелена енергія"',
-    description: 'Рослинний раціон, створений для підвищення енергії та підтримки здорового способу життя.',
-    price: 790.00,
+    title: 'Набір "Вегетаріанський"',
+    description: 'Рослинний протокол харчування з повноцінним амінокислотним профілем. Джерело рослинного протеїну та клітковини для підтримки мікробіому.',
+    price: 605.00,
     image_url: '/images/2.webp',
-    tags: ['Вегетаріанський', 'Багато клітковини', 'Суперфуди'],
+    tags: ['Вегетаріанський', 'Без м`яса'],
     ingredients: [tofuId, quinoaId, broccoliId, avocadoId]
   },
   {
-    title: 'Набір "Детокс баланс"',
-    description: 'Легкі, очищуючі страви з корисними для детоксу продуктами та поживними бульйонами.',
-    price: 820.00,
+    title: 'Набір "Баланс"',
+    description: 'Універсальний дієтичний комплекс із точним співвідношенням білків, жирів та вуглеводів. Спрямований на підтримку метаболічного гомеостазу.',
+    price: 570.00,
     image_url: '/images/3.webp',
-    tags: ['Підтримка детоксу', 'Без глютену', 'Низькокалорійний'],
-    ingredients: [broccoliId, quinoaId, avocadoId]
+    tags: ['Дієтичний', 'Збалансований'],
+    ingredients: [chickenId, quinoaId, broccoliId, avocadoId]
   },
   {
-    title: 'Набір "Омега-3 Заряд"',
-    description: 'Преміальний набір із червоною рибою, бататом та корисними жирами для мозкової активності.',
-    price: 1250.00,
+    title: 'Набір "Омега-3 заряд"',
+    description: 'Спеціалізований набір із високою концентрацією поліненасичених жирних кислот (EPA та DHA). Підтримує когнітивні функції та серцево-судинну систему.',
+    price: 995.00,
     image_url: '/images/4.webp',
-    tags: ['Преміум', 'Омега-3', 'Кето-френдлі'],
-    ingredients: [salmonId, sweetPotatoId, broccoliId]
+    tags: ['Омега жири', 'Кето'],
+    ingredients: [salmonId, sweetPotatoId, broccoliId, avocadoId]
   },
   {
-    title: 'Набір "Силове меню"',
-    description: 'Раціон для спортсменів з підвищеним вмістом тваринного білка та складних вуглеводів для набору маси.',
-    price: 980.00,
+    title: 'Набір "М\'ясний"',
+    description: 'Високобілковий раціон, розроблений для стимуляції м\'язової гіпертрофії та відновлення після інтенсивних фізичних навантажень.',
+    price: 675.00,
     image_url: '/images/5.webp',
-    tags: ['Для спортсменів', 'Масонабір', 'Ситний'],
-    ingredients: [beefId, chickenId, buckwheatId]
+    tags: ['Для спортсменів', 'Високий білок'],
+    ingredients: [beefId, chickenId, buckwheatId, sweetPotatoId]
+  },
+  {
+    title: 'Набір "Морський"',
+    description: 'Пескетаріанський комплекс, збагачений йодом, цинком та легкозасвоюваним протеїном високої біологічної цінності.',
+    price: 1050.00,
+    image_url: '/images/6.png',
+    tags: ['Амінокислоти', 'Морепродукти'],
+    ingredients: [shrimpId, salmonId, avocadoId, quinoaId]
   }
 ]);
 
-console.log("✅ 5 Україномовних боксів з новими інгредієнтами успішно завантажено!");
+console.log("✅ 6 Україномовних боксів успішно завантажено. Теги скорочено!");

@@ -28,17 +28,15 @@ const orderSchema = new mongoose.Schema({
     }
   },
   
-  // Загальна сума (для o.total_amount)
-  total_amount: {
-    type: Number,
-    required: true
+  payment_method: { 
+    type: String, 
+    enum: ['cash', 'card'], 
+    default: 'cash' 
   },
-  
-  // Статус із жорстко заданими варіантами (для селекта статусів)
-  status: {
-    type: String,
-    enum: ['pending', 'processing', 'delivering', 'completed', 'cancelled'],
-    default: 'pending'
+  payment_status: { 
+    type: String, 
+    enum: ['pending', 'paid'], 
+    default: 'pending' 
   },
   
   // Масив куплених боксів (базово необхідний для логіки магазину)

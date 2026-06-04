@@ -69,9 +69,6 @@ function Dashboard() {
               </div>
               <div>
                 <h2 className={styles.userName}>{user.full_name}</h2>
-                <span className={styles.roleBadge}>
-                  {user.role === 'admin' ? 'Адміністратор' : 'Клієнт'}
-                </span>
               </div>
             </div>
 
@@ -104,7 +101,7 @@ function Dashboard() {
           {/* Історія замовлень */}
           {user.role !== 'admin' && (
             <div className={styles.ordersCard}>
-              <h3 className={styles.ordersTitle}>🛒 Мої замовлення</h3>
+              <h3 className={styles.ordersTitle}>Мої замовлення</h3>
 
               {loadingOrders ? (
                 <p>Завантаження...</p>

@@ -22,12 +22,12 @@
 
 .cards-grid {
   display: grid;
-  /* Зменшено мінімальну ширину з 300px до 280px для кращого розміщення на вузьких екранах */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  justify-content: center;
 }
 
 .modalOverlay {
@@ -114,6 +114,104 @@
   color: #fff;
 }
 
+.controlsContainer {
+  max-width: 1200px;
+  margin: 0 auto 40px auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 250px;
+  background-color: #303030;
+  border: 1px solid #4a4a4a;
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.searchInput:focus {
+  border-color: #56ab2f;
+}
+
+.filtersWrapper {
+  display: flex;
+  gap: 15px;
+}
+
+.selectInput {
+  background-color: #303030;
+  border: 1px solid #4a4a4a;
+  color: #fff;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.selectInput:focus {
+  border-color: #56ab2f;
+}
+
+.noResults {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #a0a0a0;
+  font-size: 18px;
+  padding: 40px 0;
+}
+
+/* =========================================
+   ПАГІНАЦІЯ
+========================================= */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50px;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+.pageBtn {
+  background-color: #303030;
+  color: #fff;
+  border: 1px solid #4a4a4a;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background-color: #404040;
+  border-color: #56ab2f;
+}
+
+.pageBtn:disabled {
+  color: #666;
+  cursor: not-allowed;
+  border-color: #333;
+}
+
+.activePage {
+  background-color: #56ab2f;
+  border-color: #56ab2f;
+  color: white;
+}
+
 /* Анімації */
 @keyframes fadeInModal {
   from { opacity: 0; }
@@ -145,6 +243,17 @@
 
   .cards-grid {
     gap: 20px; /* Зменшуємо відстань між картками */
+  }
+
+  .controlsContainer {
+    flex-direction: column;
+  }
+  .filtersWrapper {
+    width: 100%;
+    flex-direction: column;
+  }
+  .selectInput {
+    width: 100%;
   }
 }
 
