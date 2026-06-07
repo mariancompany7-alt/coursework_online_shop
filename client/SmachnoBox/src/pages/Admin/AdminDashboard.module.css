@@ -9,7 +9,7 @@
 
 .header {
   background-color: #303030;
-  padding: 0 40px;
+  padding: 10px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -27,7 +27,7 @@
 .logoArea h2 {
   margin: 0;
   font-size: 20px;
-  color: #56ab2f;
+  color: #e8e8e8;
   font-weight: 700;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .logoutBtn:hover {
-  background-color: #e84150;
+  background-color: #b6333e;
   transform: translateY(-2px);
 }
 
@@ -109,7 +109,7 @@
 }
 
 .contentHeader {
-  padding: 20px 40px 0;
+  padding: 20px 40px 20px;
 }
 
 .contentHeader h1 {
@@ -122,5 +122,6 @@
   flex-grow: 1;
   padding: 20px 40px 40px;
   overflow-y: auto;
+
 }
 

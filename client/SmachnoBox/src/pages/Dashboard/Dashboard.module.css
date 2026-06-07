@@ -251,6 +251,106 @@
 }
 
 /* =========================================
+   МОДАЛЬНЕ ВІКНО ВИХОДУ З АКАУНТА
+========================================= */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInModal 0.3s ease;
+}
+
+.modalContent {
+  background-color: #303030;
+  padding: 40px 30px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border: 1px solid #4a4a4a;
+  animation: slideUpModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modalIcon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.modalContent h2 {
+  color: #ffffff;
+  margin: 0 0 15px 0;
+  font-size: 24px;
+}
+
+.modalContent p {
+  color: #bdc3c7;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Кнопки розташовані в один ряд */
+.modalActionsRow {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.logoutButton {
+  background-color: #e74c3c; /* Червоний колір для небезпечної дії */
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex: 1;
+}
+
+.logoutButton:hover {
+  background-color: #a83326;
+}
+
+.closeBtn {
+  background-color: transparent;
+  border: 1px solid #555;
+  color: #aaa;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex: 1;
+}
+
+.closeBtn:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpModal {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* =========================================
    АДАПТИВНІСТЬ (МЕДІАЗАПИТИ)
 ========================================= */
 

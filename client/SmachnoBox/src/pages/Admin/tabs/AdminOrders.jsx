@@ -1,101 +1,92 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AdminTabs.module.css';
 
-export default function AdminOrders() {
+function AdminOrders() {
   const [orders, setOrders] = useState([]);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  // 1. Стан для керування повідомленням
+  const [toastMessage, setToastMessage] = useState('');
 
-  const loadOrders = async () => {
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token');
       const res = await fetch('http://localhost:5000/api/orders', {
         headers: { Authorization: `Bearer ${token}` }
       });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || `Помилка HTTP: ${res.status}`);
-      }
-
-      const data = await res.json();
-      // Перевірка, чи бекенд дійсно повернув масив
-      if (Array.isArray(data)) {
+      if (res.ok) {
+        const data = await res.json();
         setOrders(data);
-        setError(null);
-      } else {
-        throw new Error("Бекенд повернув не масив даних!");
       }
-    } catch (err) {
-      console.error("Помилка завантаження замовлень:", err.message);
-      setError(err.message);
+    } catch (error) {
+      console.error("Помилка:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => { loadOrders(); }, []);
-
-  const changeStatus = async (id, status) => {
+  const changeStatus = async (id, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-
-      // УВАГА: Якщо в orderRoutes.js у тебе написано router.put('/:id', ...), 
-      // то забери /status з кінця цього URL!
       const res = await fetch(`http://localhost:5000/api/orders/${id}/status`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ status })
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: newStatus })
       });
 
-      if (!res.ok) throw new Error("Не вдалося оновити статус");
-      loadOrders();
-    } catch (err) {
-      alert(err.message);
+      if (res.ok) {
+        // Оновлюємо локальний стан масиву замовлень
+        setOrders(orders.map(o => o._id === id ? { ...o, status: newStatus } : o));
+        
+        // 2. Викликаємо Toast замість alert
+        showToast('Статус замовлення успішно оновлено!');
+      }
+    } catch (error) {
+      console.error("Помилка зміни статусу:", error);
     }
   };
 
-  const deleteOrder = async (id) => {
-    if (!window.confirm("Видалити замовлення?")) return;
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/orders/${id}`, {
-        method: 'DELETE', headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) loadOrders();
-    } catch (err) {
-      alert("Помилка видалення");
-    }
+  // 3. Функція для активації таймера
+  const showToast = (message) => {
+    setToastMessage(message);
+    // Скидаємо стан через 3 секунди, щоб анімація могла спрацювати знову при наступному кліку
+    setTimeout(() => {
+      setToastMessage('');
+    }, 3000);
   };
+
+  if (loading) return <p>Завантаження замовлень...</p>;
 
   return (
-    <div className={styles.tabContainer}>
-      {error && <div style={{ color: '#ff4757', padding: '10px', backgroundColor: 'rgba(255,71,87,0.1)', borderRadius: '8px', marginBottom: '20px' }}>
-        Помилка: {error}
-      </div>}
-
-      {orders.length === 0 && !error ? (
-        <p>Замовлень поки немає або вони завантажуються...</p>
-      ) : (
-        <table className={styles.table}>
+    <div>
+      <h2 className={styles.tabTitle}>Управління замовленнями</h2>
+      <div className={styles.tableContainer}>
+        <table className={styles.adminTable}>
           <thead>
             <tr>
-              <th>Дата</th>
+              <th>ID</th>
               <th>Клієнт</th>
-              <th>Адреса доставки</th>
               <th>Сума</th>
               <th>Статус</th>
-              <th>Дії</th>
             </tr>
           </thead>
           <tbody>
             {orders.map(o => (
               <tr key={o._id}>
-                <td>{new Date(o.createdAt).toLocaleDateString('uk-UA')}</td>
-                <td>{o.user_id?.full_name || 'Гість'}<br /><small>{o.user_id?.phone}</small></td>
-                <td>{o.delivery_address ? `м. ${o.delivery_address.city}, вул. ${o.delivery_address.street}` : '—'}</td>
-                <td><b>{o.total_amount} ₴</b></td>
+                <td>{o._id.slice(-6).toUpperCase()}</td>
+                <td>{o.delivery_address?.city}, {o.delivery_address?.street}</td>
+                <td>{o.total_amount} ₴</td>
                 <td>
-                  <select
+                  <select 
                     className={styles.statusSelect}
-                    value={o.status}
+                    value={o.status} 
                     onChange={e => changeStatus(o._id, e.target.value)}
                   >
                     <option value="pending">Очікує</option>
@@ -105,14 +96,21 @@ export default function AdminOrders() {
                     <option value="cancelled">Скасовано</option>
                   </select>
                 </td>
-                <td>
-                  <button className={`${styles.btn} ${styles.btnDanger}`} onClick={() => deleteOrder(o._id)}>Видалити</button>
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* 4. Рендеринг компонента Toast */}
+      {toastMessage && (
+        <div className={styles.toastNotification}>
+          <span style={{ fontSize: '18px' }}>✓</span>
+          {toastMessage}
+        </div>
       )}
     </div>
   );
 }
+
+export default AdminOrders;

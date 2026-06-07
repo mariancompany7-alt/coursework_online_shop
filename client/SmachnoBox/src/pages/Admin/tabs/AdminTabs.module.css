@@ -83,14 +83,14 @@
   background: #ff4757; 
 }
 .btnDanger:hover { 
-  background: #ff6b81; 
+  background: #a12b3d; 
 }
 
 .btnSecondary { 
-  background: #57606f; 
+  background: #687284; 
 }
 .btnSecondary:hover { 
-  background: #747d8c; 
+  background: #4c525b; 
 }
 
 /* Випадаючий список статусів */
@@ -111,17 +111,6 @@
   flex-wrap: nowrap; /* Забороняємо перенос на новий рядок */
   align-items: center;
 }
-
-/* Кольори статусів (адаптовані для читабельності) */
-.status_pending { background: #f39c12; color: #ffffff; border-color: #e67e22; }
-.status_processing { background: #d35400; color: #ffffff; border-color: #e67e22; }
-.status_delivering { background: #2980b9; color: #ffffff; border-color: #3498db; }
-.status_completed { background: #27ae60; color: #ffffff; border-color: #2ecc71; }
-.status_cancelled { background: #7f8c8d; color: #ffffff; border-color: #95a5a6; }
-
-/* =========================================
-   СТИЛІ ДЛЯ СЕЛЕКТА СТАТУСІВ (Сіро-голубий)
-========================================= */
 
 .statusSelect {
   background-color: #607d8b; /* Благородний сіро-голубий колір */
@@ -151,4 +140,35 @@
   background-color: #303030; /* Темний фон під загальний стиль адмінки */
   color: #ffffff;
   padding: 10px;
+}
+
+.toastNotification {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #303030;
+  color: #ffffff;
+  padding: 16px 24px;
+  border-radius: 8px;
+  border-left: 4px solid #56ab2f; /* Зелений індикатор успіху */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  font-size: 15px;
+  font-weight: 500;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* Анімація появи та зникнення */
+  animation: slideInToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+             fadeOutToast 0.4s ease forwards 2.6s; /* Зникне через 3 секунди (2.6s + 0.4s) */
+}
+
+@keyframes slideInToast {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOutToast {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(120%); opacity: 0; }
 }

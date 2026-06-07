@@ -28,7 +28,6 @@ const AdminDashboard = () => {
       <header className={styles.header}>
         <div className={styles.logoArea}>
           <h2>Панель керування</h2>
-          <span className={styles.badge}>SmachnoBox Admin</span>
         </div>
         
         <div className={styles.headerRight}>

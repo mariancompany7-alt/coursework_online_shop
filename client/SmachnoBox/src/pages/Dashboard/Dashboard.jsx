@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 
 function Dashboard() {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [user, setUser] = useState(null);
   const [myOrders, setMyOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
@@ -18,7 +19,6 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  // Функція завантаження замовлень поточного користувача
   const fetchMyOrders = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -36,19 +36,26 @@ function Dashboard() {
     }
   };
 
-  const handleLogout = () => {
+  const confirmLogout = () => {
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
-    localStorage.removeItem('token'); // Не забуваємо видалити токен!
     navigate('/login');
   };
 
-  // Словник для перекладу та розфарбовування статусів
-  const statusConfig = {
-    pending: { label: 'Очікує підтвердження', color: '#f39c12' },
-    processing: { label: 'Готується', color: '#3498db' },
-    delivering: { label: 'В дорозі', color: '#9b59b6' },
-    completed: { label: 'Доставлено', color: '#2ecc71' },
-    cancelled: { label: 'Скасовано', color: '#e74c3c' }
+  // НАДІЙНА ФУНКЦІЯ ДЛЯ СТАТУСІВ (Вирішує проблему пустого місця)
+  const getStatusLabel = (status) => {
+    // Якщо статусу немає (старі замовлення з БД), ставимо 'Очікує' за замовчуванням
+    const currentStatus = status ? status.toLowerCase() : 'pending';
+    
+    const statuses = {
+      pending: 'Очікує',
+      processing: 'В обробці',
+      delivering: 'В дорозі',
+      completed: 'Виконано',
+      cancelled: 'Скасовано'
+    };
+    
+    return statuses[currentStatus] || currentStatus; 
   };
 
   if (!user) return null;
@@ -61,7 +68,8 @@ function Dashboard() {
         </h1>
 
         <div className={`${styles.contentGrid} ${user.role === 'admin' ? styles.adminLayout : ''}`}>
-          {/* Картка з інформацією профілю (залишилася без змін) */}
+          
+          {/* Картка з інформацією профілю */}
           <div className={styles.profileCard}>
             <div className={styles.avatarSection}>
               <div className={styles.avatar}>
@@ -83,7 +91,7 @@ function Dashboard() {
               </div>
             </div>
 
-            <button onClick={handleLogout} className={styles.logoutBtn}>
+            <button className={styles.logoutButton} onClick={() => setShowLogoutModal(true)}>
               Вийти з акаунта
             </button>
 
@@ -98,7 +106,7 @@ function Dashboard() {
             )}
           </div>
 
-          {/* Історія замовлень */}
+          {/* Історія замовлень (тільки для покупців) */}
           {user.role !== 'admin' && (
             <div className={styles.ordersCard}>
               <h3 className={styles.ordersTitle}>Мої замовлення</h3>
@@ -114,17 +122,12 @@ function Dashboard() {
 
                       <div className={styles.orderHeader}>
                         <span className={styles.orderId}>
-                          № {order._id.slice(-6).toUpperCase()} • {new Date(order.createdAt).toLocaleDateString('uk-UA')}
+                          № {order._id.slice(-6).toUpperCase()} - {new Date(order.createdAt).toLocaleDateString('uk-UA')}
                         </span>
 
+                        {/* Використовуємо нашу нову функцію */}
                         <span className={styles.orderStatusBadge}>
-                          {{
-                            pending: 'Очікує',
-                            processing: 'В обробці',
-                            delivering: 'В дорозі',
-                            completed: 'Виконано',
-                            cancelled: 'Скасовано'
-                          }[order.status] || order.status}
+                          {getStatusLabel(order.status)}
                         </span>
                       </div>
 
@@ -145,6 +148,26 @@ function Dashboard() {
           )}
         </div>
       </div>
+      
+      {/* МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ ВИХОДУ */}
+      {showLogoutModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowLogoutModal(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalIcon}></div>
+            <h2>Вихід з акаунта</h2>
+            <p>Ви дійсно хочете вийти зі свого профілю?</p>
+
+            <div className={styles.modalActionsRow}>
+              <button onClick={confirmLogout} className={styles.logoutButton}>
+                Так, вийти
+              </button>
+              <button onClick={() => setShowLogoutModal(false)} className={styles.closeBtn}>
+                Скасувати
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
