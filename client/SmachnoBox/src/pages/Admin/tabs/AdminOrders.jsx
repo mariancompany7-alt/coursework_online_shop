@@ -4,7 +4,7 @@ import styles from './AdminTabs.module.css';
 function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // 1. Стан для керування повідомленням
   const [toastMessage, setToastMessage] = useState('');
 
@@ -44,7 +44,7 @@ function AdminOrders() {
       if (res.ok) {
         // Оновлюємо локальний стан масиву замовлень
         setOrders(orders.map(o => o._id === id ? { ...o, status: newStatus } : o));
-        
+
         // 2. Викликаємо Toast замість alert
         showToast('Статус замовлення успішно оновлено!');
       }
@@ -71,7 +71,7 @@ function AdminOrders() {
         <table className={styles.adminTable}>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Номер Замовлення</th>
               <th>Клієнт</th>
               <th>Сума</th>
               <th>Статус</th>
@@ -81,12 +81,16 @@ function AdminOrders() {
             {orders.map(o => (
               <tr key={o._id}>
                 <td>{o._id.slice(-6).toUpperCase()}</td>
-                <td>{o.delivery_address?.city}, {o.delivery_address?.street}</td>
+                <td>
+                  {o.delivery_address?.street?.includes('Тернопіль')
+                    ? o.delivery_address.street
+                    : `${o.delivery_address?.city}, ${o.delivery_address?.street}`}
+                </td>
                 <td>{o.total_amount} ₴</td>
                 <td>
-                  <select 
+                  <select
                     className={styles.statusSelect}
-                    value={o.status} 
+                    value={o.status}
                     onChange={e => changeStatus(o._id, e.target.value)}
                   >
                     <option value="pending">Очікує</option>

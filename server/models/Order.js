@@ -1,31 +1,19 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  // Зв'язок з користувачем (для o.user_id?.full_name та phone)
+  // Зв'язок з користувачем
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
   
-  // Адреса доставки (для o.delivery_address.city та street)
+  // Адреса доставки
   delivery_address: {
-    city: {
-      type: String,
-      required: true
-    },
-    street: {
-      type: String,
-      required: true
-    },
-    building: {
-      type: String,
-      required: false
-    },
-    apartment: {
-      type: String,
-      required: false
-    }
+    city: { type: String, required: true },
+    street: { type: String, required: true },
+    building: { type: String, required: false },
+    apartment: { type: String, required: false }
   },
   
   payment_method: { 
@@ -38,26 +26,28 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'paid'], 
     default: 'pending' 
   },
+
+  // === ДОДАНО: СТАТУС ТА СУМА ===
+  status: { 
+    type: String, 
+    enum: ['pending', 'processing', 'delivering', 'completed', 'cancelled'], 
+    default: 'pending' 
+  },
+  total_amount: { 
+    type: Number, 
+    required: true 
+  },
   
-  // Масив куплених боксів (базово необхідний для логіки магазину)
+  // Масив куплених боксів
   items: [{
     box_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Box',
       required: true
     },
-    quantity: {
-      type: Number,
-      required: true,
-      default: 1
-    },
-    price: {
-      type: Number,
-      required: true
-    }
+    quantity: { type: Number, required: true, default: 1 },
+    price: { type: Number, required: true }
   }]
-}, 
-// Налаштування timestamps автоматично створює поля createdAt та updatedAt
-{ timestamps: true });
+}, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

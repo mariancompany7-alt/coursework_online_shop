@@ -8,6 +8,7 @@ import AdminUsers from './tabs/AdminUsers';
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('boxes');
   const [adminInfo, setAdminInfo] = useState(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -29,7 +30,7 @@ const AdminDashboard = () => {
         <div className={styles.logoArea}>
           <h2>Панель керування</h2>
         </div>
-        
+
         <div className={styles.headerRight}>
           <div className={styles.profileBadge}>
             <span>{adminInfo?.email || 'admin@smachnobox.com'}</span>
@@ -40,19 +41,19 @@ const AdminDashboard = () => {
 
       {/* Горизонтальне навігаційне меню */}
       <nav className={styles.topNav}>
-        <button 
+        <button
           className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
           onClick={() => setActiveTab('boxes')}
         >
           Товари та бокси
         </button>
-        <button 
+        <button
           className={`${styles.navBtn} ${activeTab === 'orders' ? styles.activeBtn : ''}`}
           onClick={() => setActiveTab('orders')}
         >
           Замовлення
         </button>
-        <button 
+        <button
           className={`${styles.navBtn} ${activeTab === 'users' ? styles.activeBtn : ''}`}
           onClick={() => setActiveTab('users')}
         >
@@ -76,6 +77,25 @@ const AdminDashboard = () => {
           {activeTab === 'users' && <AdminUsers />}
         </div>
       </main>
+
+      {showLogoutModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowLogoutModal(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalIcon}></div>
+            <h2>Вихід з акаунта</h2>
+            <p>Ви дійсно хочете вийти зі свого профілю?</p>
+
+            <div className={styles.modalActionsRow}>
+              <button onClick={confirmLogout} className={styles.logoutButton}>
+                Так, вийти
+              </button>
+              <button onClick={() => setShowLogoutModal(false)} className={styles.closeBtn}>
+                Скасувати
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -46,7 +46,7 @@ function Dashboard() {
   const getStatusLabel = (status) => {
     // Якщо статусу немає (старі замовлення з БД), ставимо 'Очікує' за замовчуванням
     const currentStatus = status ? status.toLowerCase() : 'pending';
-    
+
     const statuses = {
       pending: 'Очікує',
       processing: 'В обробці',
@@ -54,8 +54,8 @@ function Dashboard() {
       completed: 'Виконано',
       cancelled: 'Скасовано'
     };
-    
-    return statuses[currentStatus] || currentStatus; 
+
+    return statuses[currentStatus] || currentStatus;
   };
 
   if (!user) return null;
@@ -68,7 +68,7 @@ function Dashboard() {
         </h1>
 
         <div className={`${styles.contentGrid} ${user.role === 'admin' ? styles.adminLayout : ''}`}>
-          
+
           {/* Картка з інформацією профілю */}
           <div className={styles.profileCard}>
             <div className={styles.avatarSection}>
@@ -136,7 +136,12 @@ function Dashboard() {
                           <strong>Сума:</strong> <span>{order.total_amount} ₴</span>
                         </div>
                         <div className={styles.orderRow}>
-                          <strong>Адреса:</strong> <span>м. {order.delivery_address.city}, вул. {order.delivery_address.street}</span>
+                          <strong>Адреса:</strong> 
+                          <span>
+                            {order.delivery_address?.street?.includes('Тернопіль') 
+                              ? order.delivery_address.street 
+                              : `м. ${order.delivery_address?.city}, вул. ${order.delivery_address?.street}`}
+                          </span>
                         </div>
                       </div>
 
@@ -148,7 +153,7 @@ function Dashboard() {
           )}
         </div>
       </div>
-      
+
       {/* МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ ВИХОДУ */}
       {showLogoutModal && (
         <div className={styles.modalOverlay} onClick={() => setShowLogoutModal(false)}>
