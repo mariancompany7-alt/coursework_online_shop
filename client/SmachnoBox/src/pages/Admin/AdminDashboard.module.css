@@ -125,6 +125,9 @@
 
 }
 
+/* =========================================
+   МОДАЛЬНЕ ВІКНО ВИХОДУ З АКАУНТА
+========================================= */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -170,16 +173,15 @@
   margin-bottom: 30px;
 }
 
-/* Кнопки розташовані в один ряд */
 .modalActionsRow {
   display: flex;
   justify-content: center;
   gap: 15px;
 }
 
-.logoutButton {
-  background-color: #e74c3c; /* Червоний колір для небезпечної дії */
-  color: #fff;
+.logoutConfirmBtn {
+  background-color: #e74c3c;
+  color: white;
   border: none;
   padding: 12px 20px;
   border-radius: 8px;
@@ -190,8 +192,8 @@
   flex: 1;
 }
 
-.logoutButton:hover {
-  background-color: #a83326;
+.logoutConfirmBtn:hover {
+  background-color: #c0392b;
 }
 
 .closeBtn {

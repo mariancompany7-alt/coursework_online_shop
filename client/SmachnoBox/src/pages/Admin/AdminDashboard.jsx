@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AdminDashboard.module.css';
+import { useNavigate } from 'react-router-dom';
 
 import AdminBoxes from './tabs/AdminBoxes';
 import AdminOrders from './tabs/AdminOrders';
@@ -17,10 +18,12 @@ const AdminDashboard = () => {
     }
   }, []);
 
-  const handleLogout = () => {
+  const navigate = useNavigate();
+
+  const confirmLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   return (
@@ -35,7 +38,7 @@ const AdminDashboard = () => {
           <div className={styles.profileBadge}>
             <span>{adminInfo?.email || 'admin@smachnobox.com'}</span>
           </div>
-          <button onClick={handleLogout} className={styles.logoutBtn}>Вийти</button>
+          <button className={styles.logoutBtn} onClick={() => setShowLogoutModal(true)}>Вийти</button>
         </div>
       </header>
 
@@ -45,7 +48,7 @@ const AdminDashboard = () => {
           className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
           onClick={() => setActiveTab('boxes')}
         >
-          Товари та бокси
+          Бокси
         </button>
         <button
           className={`${styles.navBtn} ${activeTab === 'orders' ? styles.activeBtn : ''}`}
@@ -82,11 +85,11 @@ const AdminDashboard = () => {
         <div className={styles.modalOverlay} onClick={() => setShowLogoutModal(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalIcon}></div>
-            <h2>Вихід з акаунта</h2>
-            <p>Ви дійсно хочете вийти зі свого профілю?</p>
+            <h2>Вихід з адмін-панелі</h2>
+            <p>Ви дійсно хочете завершити сеанс адміністратора?</p>
 
             <div className={styles.modalActionsRow}>
-              <button onClick={confirmLogout} className={styles.logoutButton}>
+              <button onClick={confirmLogout} className={styles.logoutConfirmBtn}>
                 Так, вийти
               </button>
               <button onClick={() => setShowLogoutModal(false)} className={styles.closeBtn}>

@@ -82,7 +82,7 @@ function Login() {
           ) : (
             <div className={styles.inputGroup}>
               <label>Телефон</label>
-              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+380 99 999 99 99" required />
+              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+380" required />
             </div>
           )}
 

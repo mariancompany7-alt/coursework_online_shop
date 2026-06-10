@@ -61,26 +61,26 @@ function Main({ plans }) {
   const handleFilter = (e) => { setFilterTag(e.target.value); setCurrentPage(1); };
   const handleSort = (e) => { setSortBy(e.target.value); setCurrentPage(1); };
 
-  if (!plans || !Array.isArray(plans)) return <p style={{textAlign: 'center', color: '#fff'}}>Завантаження планів...</p>;
+  if (!plans || !Array.isArray(plans)) return <p style={{ textAlign: 'center', color: '#fff' }}>Завантаження планів...</p>;
 
   return (
     <div className={styles['main-wrapper']}>
       <section className={styles.mealPlans}>
         <div className={styles['section-header']}>
-          <h1>Наші плани здорового харчування</h1>
-          <p>Оберіть ідеальний план підписки для вашого способу життя</p>
+          <h1>Ексклюзивне меню здорового харчування</h1>
+          <p>Збалансовані бокси з відбірних інгредієнтів. Оберіть свій ідеальний набір на кожен день</p>
         </div>
-        
+
         {/* Панель керування: Пошук, Фільтр, Сортування */}
         <div className={styles.controlsContainer}>
-          <input 
-            type="text" 
-            placeholder="Введіть назву боксу вбо страви" 
-            value={searchTerm} 
+          <input
+            type="text"
+            placeholder="Введіть назву боксу вбо страви"
+            value={searchTerm}
             onChange={handleSearch}
             className={styles.searchInput}
           />
-          
+
           <div className={styles.filtersWrapper}>
             <select value={filterTag} onChange={handleFilter} className={styles.selectInput}>
               {allTags.map(tag => (
@@ -100,11 +100,11 @@ function Main({ plans }) {
         <div className={styles['cards-grid']}>
           {paginatedPlans.length > 0 ? (
             paginatedPlans.map((plan) => (
-              <Card 
-                key={plan._id} 
-                boxData={plan} 
-                onRequireAuth={() => setShowAuthModal(true)} 
-                onAdminWarning={() => setShowAdminModal(true)} 
+              <Card
+                key={plan._id}
+                boxData={plan}
+                onRequireAuth={() => setShowAuthModal(true)}
+                onAdminWarning={() => setShowAdminModal(true)}
               />
             ))
           ) : (
@@ -115,27 +115,27 @@ function Main({ plans }) {
         {/* Пагінація (відображається тільки якщо сторінок більше ніж 1) */}
         {totalPages > 1 && (
           <div className={styles.pagination}>
-            <button 
-              className={styles.pageBtn} 
-              disabled={currentPage === 1} 
+            <button
+              className={styles.pageBtn}
+              disabled={currentPage === 1}
               onClick={() => setCurrentPage(p => p - 1)}
             >
               &laquo; Попередня
             </button>
-            
+
             {Array.from({ length: totalPages }, (_, i) => (
-              <button 
-                key={i + 1} 
-                className={`${styles.pageBtn} ${currentPage === i + 1 ? styles.activePage : ''}`} 
+              <button
+                key={i + 1}
+                className={`${styles.pageBtn} ${currentPage === i + 1 ? styles.activePage : ''}`}
                 onClick={() => setCurrentPage(i + 1)}
               >
                 {i + 1}
               </button>
             ))}
 
-            <button 
-              className={styles.pageBtn} 
-              disabled={currentPage === totalPages} 
+            <button
+              className={styles.pageBtn}
+              disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(p => p + 1)}
             >
               Наступна &raquo;
