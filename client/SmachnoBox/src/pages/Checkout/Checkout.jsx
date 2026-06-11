@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Checkout.module.css';
+import MessageModal from '../../components/Modal/MessageModal'; // Імпортуємо наш спільний компонент модалки
 
 function Checkout() {
   const navigate = useNavigate();
@@ -9,15 +10,16 @@ function Checkout() {
   const [cartItem, setCartItem] = useState(location.state?.selectedBox || null);
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
-  
-  // 1. Додаємо стан для нашого власного спливаючого вікна з помилкою
-  const [errorMessage, setErrorMessage] = useState('');
+
+  // Єдиний стан для управління нашою модалкою (успіх або помилка)
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: '', redirect: false });
 
   const [formData, setFormData] = useState({
     name: '', phone: '', address: '', paymentMethod: 'cash', comment: '',
     cardNumber: '', expiryDate: '', cvv: ''
   });
 
+  // Обробка порожнього кошика
   if (!cartItem) {
     return (
       <main className={styles.checkoutPage} style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -32,6 +34,7 @@ function Checkout() {
 
   const totalAmount = cartItem.price * quantity;
 
+  // Форматування полів картки
   const handleChange = (e) => {
     const { name, value } = e.target;
     
@@ -40,7 +43,6 @@ function Checkout() {
       setFormData(prev => ({ ...prev, [name]: formatted.substring(0, 19) }));
       return;
     }
-    
     if (name === 'expiryDate') {
       const formatted = value.replace(/\D/g, '').replace(/(.{2})/, '$1/').trim();
       setFormData(prev => ({ ...prev, [name]: formatted.substring(0, 5) }));
@@ -59,19 +61,27 @@ function Checkout() {
 
   const handleRemoveItem = () => setCartItem(null);
 
+  // Головна функція відправки
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Перевірка банківської картки, якщо обрана
     if (formData.paymentMethod === 'card') {
       if (formData.cardNumber.length < 19 || formData.expiryDate.length < 5 || formData.cvv.length < 3) {
-        // 2. Замість alert() використовуємо наш стан
-        setErrorMessage("Будь ласка, введіть коректні дані платіжної картки.");
+        setModal({
+            isOpen: true,
+            title: 'Помилка даних',
+            message: 'Будь ласка, введіть коректні дані платіжної картки.',
+            type: 'error',
+            redirect: false
+        });
         return;
       }
     }
 
     setIsProcessing(true);
 
+    // Імітація обробки платежу
     const processPayment = new Promise(resolve => {
       setTimeout(() => resolve(true), 1500);
     });
@@ -99,128 +109,149 @@ function Checkout() {
         });
 
         if (res.ok) {
-            navigate('/dashboard'); 
+            // Успішне замовлення
+            setModal({
+                isOpen: true,
+                title: 'Успішно!',
+                message: 'Ваше замовлення успішно оформлено! Дякуємо, що обрали SmachnoBox.',
+                type: 'success',
+                redirect: true // Вказує, що після закриття треба перейти в дашборд
+            });
         } else if (res.status === 401) {
             localStorage.removeItem('token');
             navigate('/login');
         } else {
             const errorData = await res.json();
-            // 3. Замість alert() використовуємо наш стан
-            setErrorMessage(`Помилка: ${errorData.message}`);
+            setModal({
+                isOpen: true,
+                title: 'Помилка замовлення',
+                message: `Помилка: ${errorData.message}`,
+                type: 'error',
+                redirect: false
+            });
         }
     } catch (err) {
         console.error("Помилка мережі:", err);
-        setErrorMessage("Виникла помилка мережі. Спробуйте пізніше.");
+        setModal({
+            isOpen: true,
+            title: 'Збій мережі',
+            message: 'Виникла помилка мережі. Спробуйте пізніше.',
+            type: 'error',
+            redirect: false
+        });
     } finally {
         setIsProcessing(false);
     }
   };
 
+  // Функція закриття модалки
+  const handleCloseModal = () => {
+    setModal({ ...modal, isOpen: false });
+    // Робимо редірект тільки якщо замовлення було успішним (redirect: true)
+    if (modal.redirect) {
+      navigate('/dashboard');
+    }
+  };
+
   return (
-    <main className={styles.checkoutPage}>
-      <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Оформлення замовлення</h1>
-        
-        <div className={styles.layout}>
-          {/* ... (Форма та кошик залишаються без змін) ... */}
-          <form onSubmit={handleSubmit} className={styles.formSection}>
-            <h2 className={styles.sectionTitle}>1. Дані для доставки</h2>
-            <div className={styles.formGroup}>
-              <label>Ім'я та прізвище отримувача</label>
-              <input type="text" name="name" required value={formData.name} onChange={handleChange} />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Контактний номер телефону</label>
-              <input type="tel" name="phone" required placeholder="+380" value={formData.phone} onChange={handleChange} />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Адреса доставки</label>
-              <input type="text" name="address" required placeholder="Місто, вулиця, будинок, квартира" value={formData.address} onChange={handleChange} />
-            </div>
-
-            <h2 className={styles.sectionTitle}>2. Спосіб оплати</h2>
-            <div className={styles.formGroup}>
-              <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} className={styles.selectInput}>
-                <option value="cash">Готівкою при отриманні</option>
-                <option value="card">Карткою онлайн на сайті (Visa / MasterCard)</option>
-              </select>
-            </div>
-
-            {formData.paymentMethod === 'card' && (
-              <div className={styles.creditCardBox}>
+    <>
+        <main className={styles.checkoutPage}>
+        <div className={styles.container}>
+            <h1 className={styles.pageTitle}>Оформлення замовлення</h1>
+            
+            <div className={styles.layout}>
+            <form onSubmit={handleSubmit} className={styles.formSection}>
+                <h2 className={styles.sectionTitle}>1. Дані для доставки</h2>
                 <div className={styles.formGroup}>
-                  <label>Номер картки</label>
-                  <input type="text" name="cardNumber" placeholder="0000 0000 0000 0000" maxLength="19" value={formData.cardNumber} onChange={handleChange} required />
+                <label>Ім'я та прізвище отримувача</label>
+                <input type="text" name="name" required value={formData.name} onChange={handleChange} />
                 </div>
-                <div className={styles.cardRow}>
-                  <div className={styles.formGroup}>
-                    <label>Термін дії</label>
-                    <input type="text" name="expiryDate" placeholder="MM/YY" maxLength="5" value={formData.expiryDate} onChange={handleChange} required />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>CVV</label>
-                    <input type="text" name="cvv" placeholder="123" maxLength="3" value={formData.cvv} onChange={handleChange} required />
-                  </div>
+                <div className={styles.formGroup}>
+                <label>Контактний номер телефону</label>
+                <input type="tel" name="phone" required placeholder="+380" value={formData.phone} onChange={handleChange} />
                 </div>
-              </div>
-            )}
+                <div className={styles.formGroup}>
+                <label>Адреса доставки</label>
+                <input type="text" name="address" required placeholder="Місто, вулиця, будинок, квартира" value={formData.address} onChange={handleChange} />
+                </div>
 
-            <h2 className={styles.sectionTitle}>3. Додатково</h2>
-            <div className={styles.formGroup}>
-              <label>Коментар до замовлення</label>
-              <textarea name="comment" rows="3" value={formData.comment} onChange={handleChange} />
-            </div>
-          </form>
+                <h2 className={styles.sectionTitle}>2. Спосіб оплати</h2>
+                <div className={styles.formGroup}>
+                <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} className={styles.selectInput}>
+                    <option value="cash">Готівкою при отриманні</option>
+                    <option value="card">Карткою онлайн на сайті (Visa / MasterCard)</option>
+                </select>
+                </div>
 
-          <aside className={styles.summarySection}>
-            <h2 className={styles.summaryTitle}>Ваше замовлення</h2>
-            <div className={styles.itemsList}>
-              <div className={styles.cartItem}>
-                <div className={styles.itemInfo}>
-                  <span className={styles.itemName}>{cartItem.title}</span>
-                  <span className={styles.itemPrice}>{cartItem.price} ₴</span>
+                {formData.paymentMethod === 'card' && (
+                <div className={styles.creditCardBox}>
+                    <div className={styles.formGroup}>
+                    <label>Номер картки</label>
+                    <input type="text" name="cardNumber" placeholder="0000 0000 0000 0000" maxLength="19" value={formData.cardNumber} onChange={handleChange} required />
+                    </div>
+                    <div className={styles.cardRow}>
+                    <div className={styles.formGroup}>
+                        <label>Термін дії</label>
+                        <input type="text" name="expiryDate" placeholder="MM/YY" maxLength="5" value={formData.expiryDate} onChange={handleChange} required />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>CVV</label>
+                        <input type="text" name="cvv" placeholder="123" maxLength="3" value={formData.cvv} onChange={handleChange} required />
+                    </div>
+                    </div>
                 </div>
-                <div className={styles.itemActions}>
-                  <div className={styles.quantityControl}>
-                    <button type="button" onClick={() => handleQuantityChange(-1)}>-</button>
-                    <span>{quantity}</span>
-                    <button type="button" onClick={() => handleQuantityChange(1)}>+</button>
-                  </div>
-                  <button type="button" onClick={handleRemoveItem} className={styles.removeBtn}>&times;</button>
+                )}
+
+                <h2 className={styles.sectionTitle}>3. Додатково</h2>
+                <div className={styles.formGroup}>
+                <label>Коментар до замовлення</label>
+                <textarea name="comment" rows="3" value={formData.comment} onChange={handleChange} />
                 </div>
-              </div>
+            </form>
+
+            <aside className={styles.summarySection}>
+                <h2 className={styles.summaryTitle}>Ваше замовлення</h2>
+                <div className={styles.itemsList}>
+                <div className={styles.cartItem}>
+                    <div className={styles.itemInfo}>
+                    <span className={styles.itemName}>{cartItem.title}</span>
+                    <span className={styles.itemPrice}>{cartItem.price} ₴</span>
+                    </div>
+                    <div className={styles.itemActions}>
+                    <div className={styles.quantityControl}>
+                        <button type="button" onClick={() => handleQuantityChange(-1)}>-</button>
+                        <span>{quantity}</span>
+                        <button type="button" onClick={() => handleQuantityChange(1)}>+</button>
+                    </div>
+                    <button type="button" onClick={handleRemoveItem} className={styles.removeBtn}>&times;</button>
+                    </div>
+                </div>
+                </div>
+                <div className={styles.priceSummary}>
+                <div className={styles.totalRow}>
+                    <span>Разом до сплати:</span>
+                    <span className={styles.totalPrice}>{totalAmount} ₴</span>
+                </div>
+                </div>
+                <div className={styles.actions}>
+                <button type="submit" onClick={handleSubmit} className={styles.submitButton} disabled={isProcessing}>
+                    {isProcessing ? 'Обробка транзакції...' : (formData.paymentMethod === 'card' ? `Оплатити ${totalAmount} ₴` : 'Підтвердити замовлення')}
+                </button>
+                </div>
+            </aside>
             </div>
-            <div className={styles.priceSummary}>
-              <div className={styles.totalRow}>
-                <span>Разом до сплати:</span>
-                <span className={styles.totalPrice}>{totalAmount} ₴</span>
-              </div>
-            </div>
-            <div className={styles.actions}>
-              <button type="submit" onClick={handleSubmit} className={styles.submitButton} disabled={isProcessing}>
-                {isProcessing ? 'Обробка транзакції...' : (formData.paymentMethod === 'card' ? `Оплатити ${totalAmount} ₴` : 'Підтвердити замовлення')}
-              </button>
-            </div>
-          </aside>
         </div>
-      </div>
+        </main>
 
-      {/* 4. Власний компонент Модального вікна замість alert */}
-      {errorMessage && (
-        <div className={styles.modalOverlay} onClick={() => setErrorMessage('')}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalIcon}></div>
-            <h2>Увага</h2>
-            <p>{errorMessage}</p>
-            <div className={styles.modalActions}>
-              <button onClick={() => setErrorMessage('')} className={styles.closeBtn}>
-                Зрозуміло
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </main>
+        {/* Викликаємо наш універсальний компонент модалки. Вона з'явиться, коли modal.isOpen === true */}
+        <MessageModal 
+            isOpen={modal.isOpen} 
+            title={modal.title} 
+            message={modal.message} 
+            type={modal.type} 
+            onClose={handleCloseModal} 
+        />
+    </>
   );
 }
 

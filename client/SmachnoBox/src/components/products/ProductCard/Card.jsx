@@ -1,90 +1,77 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Card.module.css';
+import MessageModal from '../../Modal/MessageModal'; // Імпорт модалки
 
-// 1. Додаємо пропс onRequireAuth
-function Card({ boxData, onRequireAuth }) {
-    const { _id, title, description, price, image_url, tags = [], ingredients = [] } = boxData;
+function Card({ boxData }) {
+    const { _id, title, description, price, image_url, tags = [] } = boxData;
     const navigate = useNavigate();
-    const [showDetails, setShowDetails] = useState(false);
+    
+    // Стан для керування модальним вікном
+    const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: '', action: null });
 
-    const totalCalories = ingredients.reduce((sum, item) => sum + (item.nutritional_value?.calories || 0), 0);
-
-    const handleOrderClick = () => {
-        const token = localStorage.getItem('token');
-        const userString = localStorage.getItem('user');
-
-        if (!token || !userString) {
-            if (onRequireAuth) onRequireAuth();
-            return;
+    const handleOrderClick = (e) => {
+        const storedUser = localStorage.getItem('user');
+        
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            if (user.role === 'admin') {
+                e.preventDefault(); // Блокуємо перехід
+                setModal({
+                    isOpen: true,
+                    title: 'Увага!',
+                    message: 'Адміністратори не можуть формувати клієнтські замовлення.',
+                    type: 'warning',
+                    action: null
+                });
+            }
+        } else {
+            e.preventDefault();
+            setModal({
+                isOpen: true,
+                title: 'Потрібна авторизація',
+                message: 'Будь ласка, увійдіть в акаунт, щоб зробити замовлення.',
+                type: 'warning',
+                action: () => navigate('/login') // Перехід після закриття модалки
+            });
         }
+    };
 
-        const user = JSON.parse(userString);
-        if (user.role === 'admin') {
-            // 2. Замість alert викликаємо функцію, яка відкриє вікно
-            if (onAdminWarning) onAdminWarning();
-            return;
-        }
-
-        navigate('/checkout', { state: { selectedBox: boxData } });
+    const closeModal = () => {
+        setModal({ ...modal, isOpen: false });
+        if (modal.action) modal.action(); // Виконуємо дію (наприклад, редірект), якщо вона є
     };
 
     return (
-        <div className={styles.card}>
-            <img src={image_url} alt={title} className={styles['card-image']} />
+        <>
+            <div className={styles.card}>
+                <img src={image_url} alt={title} className={styles['card-image']} />
 
-            <div className={styles['card-content']}>
-                <h2 className={styles['card-title']}>{title}</h2>
-                <p className={styles['card-description']}>{description}</p>
+                <div className={styles['card-content']}>
+                    <h2 className={styles['card-title']}>{title}</h2>
+                    <p className={styles['card-description']}>{description}</p>
 
-                <div className={styles['card-highlights']}>
-                    {tags.map((tag, index) => (
-                        <span key={index} className={styles['highlight-badge']}>{tag}</span>
-                    ))}
-                </div>
-
-                <div className={styles['ingredients-section']}>
-                    <button
-                        className={styles['details-toggle']}
-                        onClick={() => setShowDetails(!showDetails)}
-                    >
-                        {showDetails ? '▲ Сховати склад' : '▼ Показати склад та калорії'}
-                    </button>
-
-                    {showDetails && (
-                        <div className={styles['details-container']}>
-                            <p className={styles['details-calories']}>
-                                <span>Енергетична цінність:</span>
-                                <span className={styles['details-calories-value']}>{totalCalories} ккал</span>
-                            </p>
-                            <ul className={styles['details-list']}>
-                                {ingredients.length > 0 ? ingredients.map((ing) => (
-                                    <li key={ing._id}>
-                                        {ing.name} <span className={styles['item-calories']}>— {ing.nutritional_value?.calories || 0} ккал</span>
-                                    </li>
-                                )) : <li>Склад ще формується</li>}
-                            </ul>
+                    <div className={styles['card-details']}>
+                        <div className={styles['detail-item']}>
+                            <span className={styles['detail-label']}>Ціна:</span>
+                            <span className={styles['detail-value']}>{price} ₴</span>
                         </div>
-                    )}
-                </div>
-
-                <div className={styles['card-details']}>
-                    <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Страв у наборі:</span>
-                        <span className={styles['detail-value']}>{ingredients.length || 21}</span>
                     </div>
-                    <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Ціна:</span>
-                        <span className={styles['detail-value']}>{price} ₴</span>
-                    </div>
-                </div>
 
-                {/* 3. Кнопка стала чистою */}
-                <button className={styles['card-button']} onClick={handleOrderClick} style={{ width: '100%', marginTop: '10px' }}>
-                    Замовити зараз
-                </button>
+                    <Link to="/checkout" className={styles.secondaryButton} onClick={handleOrderClick}>
+                        <button className={styles['card-button']}>Замовити зараз</button>
+                    </Link>
+                </div>
             </div>
-        </div>
+            
+            <MessageModal 
+                isOpen={modal.isOpen} 
+                title={modal.title} 
+                message={modal.message} 
+                type={modal.type} 
+                onClose={closeModal} 
+            />
+        </>
     );
 }
 
