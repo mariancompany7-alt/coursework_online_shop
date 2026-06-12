@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Main from '../../components/Main/Main';
-import About from '../../components/About/About'; // Імпортуємо нову секцію
+import About from '../../components/About/About';
 
 function Home() {
   const [plans, setPlans] = useState([]); 

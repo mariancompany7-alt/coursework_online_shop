@@ -42,9 +42,7 @@ function Dashboard() {
     navigate('/login');
   };
 
-  // НАДІЙНА ФУНКЦІЯ ДЛЯ СТАТУСІВ (Вирішує проблему пустого місця)
   const getStatusLabel = (status) => {
-    // Якщо статусу немає (старі замовлення з БД), ставимо 'Очікує' за замовчуванням
     const currentStatus = status ? status.toLowerCase() : 'pending';
 
     const statuses = {
@@ -69,7 +67,6 @@ function Dashboard() {
 
         <div className={`${styles.contentGrid} ${user.role === 'admin' ? styles.adminLayout : ''}`}>
 
-          {/* Картка з інформацією профілю */}
           <div className={styles.profileCard}>
             <div className={styles.avatarSection}>
               <div className={styles.avatar}>
@@ -106,7 +103,6 @@ function Dashboard() {
             )}
           </div>
 
-          {/* Історія замовлень (тільки для покупців) */}
           {user.role !== 'admin' && (
             <div className={styles.ordersCard}>
               <h3 className={styles.ordersTitle}>Мої замовлення</h3>
@@ -125,7 +121,6 @@ function Dashboard() {
                           № {order._id.slice(-6).toUpperCase()} - {new Date(order.createdAt).toLocaleDateString('uk-UA')}
                         </span>
 
-                        {/* Використовуємо нашу нову функцію */}
                         <span className={styles.orderStatusBadge}>
                           {getStatusLabel(order.status)}
                         </span>
@@ -154,7 +149,6 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ ВИХОДУ */}
       {showLogoutModal && (
         <div className={styles.modalOverlay} onClick={() => setShowLogoutModal(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>

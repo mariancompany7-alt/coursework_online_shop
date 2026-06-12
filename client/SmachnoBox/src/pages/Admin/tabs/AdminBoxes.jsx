@@ -3,7 +3,6 @@ import styles from './AdminTabs.module.css';
 
 export default function AdminBoxes() {
   const [boxes, setBoxes] = useState([]);
-  // Updated to match MongoDB schema (title instead of name) and added missing fields
   const [form, setForm] = useState({ title: '', price: '', description: '', image_url: '', tags: '' });
   const [editId, setEditId] = useState(null);
 
@@ -19,7 +18,6 @@ export default function AdminBoxes() {
     const token = localStorage.getItem('token');
     const url = editId ? `http://localhost:5000/api/boxes/${editId}` : 'http://localhost:5000/api/boxes';
     
-    // Format tags from a comma-separated string into an array before sending to the database
     const submissionData = {
       ...form,
       tags: typeof form.tags === 'string' ? form.tags.split(',').map(tag => tag.trim()) : form.tags
@@ -49,7 +47,6 @@ export default function AdminBoxes() {
 
   return (
     <div className={styles.tabContainer}>
-      {/* Added flexWrap to handle the extra inputs cleanly */}
       <form onSubmit={handleSubmit} className={styles.formGroup} style={{ flexWrap: 'wrap', gap: '10px' }}>
         <input className={styles.input} style={{ flex: '1 1 200px' }} placeholder="Назва (Title)" value={form.title} onChange={e => setForm({...form, title: e.target.value})} required />
         <input className={styles.input} style={{ width: '100px' }} type="number" placeholder="Ціна" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required />
@@ -82,7 +79,7 @@ export default function AdminBoxes() {
                   <div style={{ width: '50px', height: '50px', backgroundColor: '#eee', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>Немає</div>
                 )}
               </td>
-              {/* Fallback to b.name just in case old database entries still use it */}
+
               <td><b>{b.title || b.name}</b></td>
               <td>{b.description}</td>
               <td>{b.price} ₴</td>

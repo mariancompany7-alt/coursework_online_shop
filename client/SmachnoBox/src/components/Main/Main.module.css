@@ -6,7 +6,7 @@
 .section-header {
   text-align: center;
   margin-bottom: 50px;
-  padding: 0 20px; /* Захист від прилипання тексту до країв екрану */
+  padding: 0 20px;
 }
 
 .section-header h1 {
@@ -37,7 +37,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(4px); /* Легке розмиття заднього фону */
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,7 +45,6 @@
   animation: fadeInModal 0.3s ease;
 }
 
-/* Сама карточка повідомлення */
 .modalContent {
   background-color: #303030;
   padding: 40px 30px;
@@ -55,7 +54,7 @@
   text-align: center;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
   border: 1px solid #4a4a4a;
-  animation: slideUpModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Ефект легкого підстрибування */
+  animation: slideUpModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .modalIcon {
@@ -170,9 +169,6 @@
   padding: 40px 0;
 }
 
-/* =========================================
-   ПАГІНАЦІЯ
-========================================= */
 .pagination {
   display: flex;
   justify-content: center;
@@ -223,51 +219,51 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* =========================================
-   АДАПТИВНІСТЬ (МЕДІАЗАПИТИ)
-========================================= */
-
-/* Для планшетів та великих телефонів (до 768px) */
-@media screen and (max-width: 768px) {
-  .main-wrapper {
-    padding: 50px 0; /* Зменшуємо вертикальні відступи секції */
-  }
-
-  .section-header {
-    margin-bottom: 35px;
-  }
-
-  .section-header h1 {
-    font-size: 28px; /* Зменшуємо головний заголовок */
-  }
-
-  .cards-grid {
-    gap: 20px; /* Зменшуємо відстань між картками */
-  }
-
-  .controlsContainer {
+@media (max-width: 768px) {
+  .controls {
     flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    padding: 10px;
   }
-  .filtersWrapper {
+
+  .filterSelect {
     width: 100%;
-    flex-direction: column;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 8px;
   }
-  .selectInput {
-    width: 100%;
+
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 5px;
+  }
+
+  .pageButton {
+    padding: 6px 12px;
+    font-size: 14px;
+    min-width: 35px;
+  }
+
+  .prevNextButton {
+    padding: 6px 10px;
+    font-size: 13px;
+    flex-grow: 1;
+    text-align: center;
   }
 }
 
-/* Для маленьких мобільних екранів (до 480px) */
-@media screen and (max-width: 480px) {
-  .section-header h1 {
-    font-size: 24px;
+@media (max-width: 480px) {
+  .pageButton {
+    padding: 5px 10px;
+    font-size: 12px;
   }
   
-  .section-header p {
-    font-size: 15px;
-  }
-
-  .cards-grid {
-    grid-template-columns: 1fr; /* Одна картка в ряд на всю ширину екрану */
+  .prevNextButton {
+    font-size: 12px;
+    padding: 5px 8px;
   }
 }

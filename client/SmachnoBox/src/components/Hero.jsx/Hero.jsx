@@ -8,7 +8,6 @@ function Hero() {
                 <div className={styles.content}>
                     <h1>Смачно. Корисно. Швидко.</h1>
                     <p>Твій персональний раціон здорового харчування з доставкою до дверей.</p>
-                    {/* Кнопка, яка плавно скролить до меню */}
                     <a href="#menu" className={styles.ctaButton}>Обрати раціон</a>
                 </div>
             </div>

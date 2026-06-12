@@ -1,10 +1,9 @@
 const User = require('../models/User');
-const jwt = require('jsonwebtoken'); // Імпортуємо бібліотеку для токенів
+const jwt = require('jsonwebtoken');
 
-// Допоміжна функція для генерації JWT-токена
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'supersecretkey', {
-    expiresIn: '30d', // Токен буде дійсним 30 днів
+    expiresIn: '30d',
   });
 };
 
@@ -19,12 +18,11 @@ exports.createUser = async (req, res) => {
     const newUser = new User(req.body); 
     const savedUser = await newUser.save();
     
-    // Генеруємо токен для нового користувача
     const token = generateToken(savedUser._id);
 
     res.status(201).json({ 
       success: true, 
-      token, // Відправляємо токен на фронтенд
+      token,
       user: {
         _id: savedUser._id,
         full_name: savedUser.full_name,
@@ -51,7 +49,6 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Введіть Email або Номер телефону' });
     }
 
-    // Шукаємо користувача
     const query = email ? { email } : { phone };
     const user = await User.findOne(query);
 
@@ -59,18 +56,16 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Користувача не знайдено' });
     }
 
-    // Перевіряємо пароль
     if (user.password_hash !== password_hash) {
       return res.status(400).json({ success: false, message: 'Невірний пароль' });
     }
 
-    // Генеруємо токен при успішному вході
     const token = generateToken(user._id);
 
     res.status(200).json({ 
       success: true, 
       message: 'Вхід успішний!', 
-      token, // Відправляємо токен на фронтенд
+      token,
       user: {
         _id: user._id,
         full_name: user.full_name,

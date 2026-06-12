@@ -28,7 +28,6 @@ const AdminDashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Верхня шапка */}
       <header className={styles.header}>
         <div className={styles.logoArea}>
           <h2>Панель керування</h2>
@@ -42,7 +41,6 @@ const AdminDashboard = () => {
         </div>
       </header>
 
-      {/* Горизонтальне навігаційне меню */}
       <nav className={styles.topNav}>
         <button
           className={`${styles.navBtn} ${activeTab === 'boxes' ? styles.activeBtn : ''}`}
@@ -63,8 +61,6 @@ const AdminDashboard = () => {
           Користувачі
         </button>
       </nav>
-
-      {/* Робоча область на всю ширину */}
       <main className={styles.mainContent}>
         <div className={styles.contentHeader}>
           <h1>

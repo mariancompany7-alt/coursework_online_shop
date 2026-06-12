@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  // Зв'язок з користувачем
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
   
-  // Адреса доставки
   delivery_address: {
     city: { type: String, required: true },
     street: { type: String, required: true },
@@ -27,7 +25,6 @@ const orderSchema = new mongoose.Schema({
     default: 'pending' 
   },
 
-  // === ДОДАНО: СТАТУС ТА СУМА ===
   status: { 
     type: String, 
     enum: ['pending', 'processing', 'delivering', 'completed', 'cancelled'], 
@@ -38,7 +35,6 @@ const orderSchema = new mongoose.Schema({
     required: true 
   },
   
-  // Масив куплених боксів
   items: [{
     box_id: {
       type: mongoose.Schema.Types.ObjectId,

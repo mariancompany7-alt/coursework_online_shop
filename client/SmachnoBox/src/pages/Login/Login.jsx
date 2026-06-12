@@ -32,11 +32,9 @@ function Login() {
         if (data.success) {
           setSuccess('Вхід успішний! Перенаправлення...');
 
-          // ВИПРАВЛЕНО: Тепер використовуємо 'data', а не 'response.data'
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
 
-          // Перевіряємо роль користувача для правильного редіректу
           setTimeout(() => {
             if (data.user.role === 'admin') {
               navigate('/admin');

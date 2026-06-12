@@ -1,5 +1,5 @@
 .tabContainer {
-  background: #303030; /* Трохи темніший фон для контрасту з основною зоною #454545 */
+  background: #303030;
   padding: 10px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -14,9 +14,9 @@
 
 .table th {
   padding: 15px 12px;
-  background-color: #3a3a3a; /* Виділення шапки таблиці */
-  border-bottom: 2px solid #56ab2f; /* Фірмовий зелений акцент знизу шапки */
-  color: #bdc3c7; /* Світло-сірий текст */
+  background-color: #3a3a3a; 
+  border-bottom: 2px solid #56ab2f;
+  color: #bdc3c7;
   font-weight: 600;
   text-transform: uppercase;
   font-size: 13px;
@@ -24,13 +24,13 @@
 
 .table td {
   padding: 15px 12px;
-  border-bottom: 1px solid #4a4a4a; /* Темний розділювач */
+  border-bottom: 1px solid #4a4a4a;
   color: #ffffff;
   vertical-align: middle;
 }
 
 .table tr:hover td {
-  background-color: #383838; /* Легка підсвітка рядка при наведенні */
+  background-color: #383838;
 }
 
 /* Форми та інпути */
@@ -46,7 +46,7 @@
 
 .input {
   padding: 10px 15px;
-  background-color: #454545; /* Темний фон інпута */
+  background-color: #454545;
   color: #ffffff;
   border: 1px solid #555555;
   border-radius: 8px;
@@ -59,7 +59,7 @@
 }
 
 .input:focus {
-  border-color: #56ab2f; /* Зелена рамка при активності */
+  border-color: #56ab2f;
   box-shadow: 0 0 5px rgba(86, 171, 47, 0.5);
 }
 
@@ -68,8 +68,8 @@
   padding: 10px 20px;
   cursor: pointer;
   border: none;
-  border-radius: 30px; /* Заокруглення як у ваших основних кнопок */
-  background: #56ab2f; /* Фірмовий зелений замість синього */
+  border-radius: 30px; 
+  background: #56ab2f;
   color: white;
   font-weight: bold;
   transition: background-color 0.3s ease, transform 0.2s ease;
@@ -93,7 +93,6 @@
   background: #4c525b; 
 }
 
-/* Випадаючий список статусів */
 .select {
   padding: 8px 12px;
   border-radius: 20px;
@@ -107,17 +106,17 @@
 
 .actionsGroup {
   display: flex;
-  gap: 10px; /* Відстань між кнопками */
-  flex-wrap: nowrap; /* Забороняємо перенос на новий рядок */
+  gap: 10px; 
+  flex-wrap: nowrap; 
   align-items: center;
 }
 
 .statusSelect {
-  background-color: #607d8b; /* Благородний сіро-голубий колір */
+  background-color: #607d8b;
   color: #ffffff;
   border: 1px solid #4f6a77;
   padding: 8px 14px;
-  border-radius: 8px; /* Акуратна заокруглена форма */
+  border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
   font-weight: 500;
@@ -128,16 +127,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Ефект при наведенні та кліку */
 .statusSelect:hover, 
 .statusSelect:focus {
-  background-color: #546e7a; /* Трохи темніший відтінок при взаємодії */
+  background-color: #546e7a; 
   border-color: #819ca9;
 }
 
-/* Стиль для пунктів меню всередині випадаючого списку */
 .statusSelect option {
-  background-color: #303030; /* Темний фон під загальний стиль адмінки */
+  background-color: #303030;
   color: #ffffff;
   padding: 10px;
 }
@@ -150,7 +147,7 @@
   color: #ffffff;
   padding: 16px 24px;
   border-radius: 8px;
-  border-left: 4px solid #56ab2f; /* Зелений індикатор успіху */
+  border-left: 4px solid #56ab2f;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   font-size: 15px;
   font-weight: 500;
@@ -170,9 +167,6 @@
   to { transform: translateX(120%); opacity: 0; }
 }
 
-/* =========================================
-   ТАБЛИЦІ В АДМІН-ПАНЕЛІ (Замовлення та Товари)
-========================================= */
 .tableContainer {
   width: 100%;
   overflow-x: auto;
@@ -213,4 +207,49 @@
 
 .adminTable tr:hover {
   background-color: #383838;
+}
+
+.dateTimeCell {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.clientCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactInfo {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.contactSubInfo {
+  font-size: 12px;
+  color: #bdc3c7;
+}
+
+.itemsCell {
+  min-width: 220px;
+}
+
+.orderItemContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.orderItemContainer:last-child {
+  margin-bottom: 0;
+}
+
+.itemDetails {
+  font-size: 12px;
+  color: #bdc3c7;
+}
+
+.amountCell {
+  white-space: nowrap;
 }

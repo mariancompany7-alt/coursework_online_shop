@@ -1,148 +1,149 @@
 /* global use, db, ObjectId */
-// MongoDB Playground
 
-// Вибір вашої бази даних
 use('smachnobox_db');
 
-// Робимо користувача адміном (якщо він існує)
 db.users.updateOne(
   { email: "admin@gmail.com" }, 
   { $set: { role: "admin" } }
 );
 
-// Очищення колекцій перед завантаженням нових даних
 db.boxes.drop();
 db.ingredients.drop();
 
-// 1. Генеруємо унікальні ідентифікатори для інгредієнтів
 const chickenId = new ObjectId();
-const turkeyId = new ObjectId(); // Новий: Індичка су-від
+const turkeyId = new ObjectId();
 const beefId = new ObjectId();
 const salmonId = new ObjectId();
 const shrimpId = new ObjectId();
 const tofuId = new ObjectId();
-
 const buckwheatId = new ObjectId();
-const bulgurId = new ObjectId(); // Новий: Булгур
-const pumpkinId = new ObjectId(); // Новий: Пюре з гарбуза
+const bulgurId = new ObjectId();
+const pumpkinId = new ObjectId();
+const greenBeansId = new ObjectId();
+const beetrootId = new ObjectId();
+const avocadoId = new ObjectId();
+const complexSaladId = new ObjectId();
 
-const greenBeansId = new ObjectId(); // Новий: Стручкова квасоля
-const beetrootId = new ObjectId(); // Новий: Буряк з горіхами
-const avocadoId = new ObjectId(); // Залишаємо тільки для Омега-3
-
-// 2. Завантажуємо оновлений список ексклюзивних та локальних інгредієнтів
 db.ingredients.insertMany([
   {
     _id: chickenId,
-    name: "Куряче філе гриль",
+    name: "Куряче філе гриль (добова норма)",
     category: "М'ясо",
-    price: 65,
-    weight_grams: 150,
-    nutritional_value: { calories: 165, protein: 31, fat: 3.6, carbs: 0 },
+    price: 130,
+    weight_grams: 350,
+    nutritional_value: { calories: 560, protein: 110, fat: 12, carbs: 0 },
     is_available: true
   },
   {
     _id: turkeyId,
-    name: "Філе індички",
+    name: "Філе індички су-від (добова норма)",
     category: "М'ясо",
-    price: 90,
-    weight_grams: 150,
-    nutritional_value: { calories: 155, protein: 34, fat: 1.5, carbs: 0 },
+    price: 180,
+    weight_grams: 350,
+    nutritional_value: { calories: 490, protein: 105, fat: 7, carbs: 0 },
     is_available: true
   },
   {
     _id: beefId,
-    name: "Томлена телятина",
+    name: "Томлена телятина (добова норма)",
     category: "М'ясо",
-    price: 110,
-    weight_grams: 150,
-    nutritional_value: { calories: 210, protein: 28, fat: 11, carbs: 0 },
+    price: 250,
+    weight_grams: 300,
+    nutritional_value: { calories: 630, protein: 75, fat: 33, carbs: 0 },
     is_available: true
   },
   {
     _id: salmonId,
-    name: "Філе лосося на пару",
+    name: "Філе лосося на пару (добова норма)",
     category: "Риба",
-    price: 150,
-    weight_grams: 130,
-    nutritional_value: { calories: 208, protein: 22, fat: 13, carbs: 0 },
+    price: 320,
+    weight_grams: 250,
+    nutritional_value: { calories: 520, protein: 50, fat: 35, carbs: 0 },
     is_available: true
   },
   {
     _id: shrimpId,
-    name: "Тигрові креветки гриль",
+    name: "Тигрові креветки (добова норма)",
     category: "Морепродукти",
-    price: 180,
-    weight_grams: 100,
-    nutritional_value: { calories: 99, protein: 24, fat: 0.3, carbs: 0.2 },
+    price: 380,
+    weight_grams: 250,
+    nutritional_value: { calories: 250, protein: 60, fat: 2, carbs: 1 },
     is_available: true
   },
   {
     _id: tofuId,
-    name: "Тофу з пряними травами",
+    name: "Органічний тофу (добова норма)",
     category: "Веган",
-    price: 70,
-    weight_grams: 120,
-    nutritional_value: { calories: 144, protein: 15, fat: 8, carbs: 3 },
+    price: 140,
+    weight_grams: 350,
+    nutritional_value: { calories: 520, protein: 55, fat: 30, carbs: 10 },
     is_available: true
   },
   {
     _id: buckwheatId,
-    name: "Відварна гречка",
+    name: "Гречана крупа (добова порція гарніру)",
     category: "Гарніри",
-    price: 30,
-    weight_grams: 150,
-    nutritional_value: { calories: 140, protein: 5, fat: 1, carbs: 27 },
+    price: 45,
+    weight_grams: 400,
+    nutritional_value: { calories: 440, protein: 16, fat: 3, carbs: 85 },
     is_available: true
   },
   {
     _id: bulgurId,
-    name: "Булгур з овочами",
+    name: "Булгур з овочами (добова порція гарніру)",
     category: "Гарніри",
-    price: 45,
-    weight_grams: 150,
-    nutritional_value: { calories: 125, protein: 4, fat: 0.5, carbs: 28 },
+    price: 70,
+    weight_grams: 400,
+    nutritional_value: { calories: 480, protein: 14, fat: 5, carbs: 95 },
     is_available: true
   },
   {
     _id: pumpkinId,
     name: "Пюре із запеченого гарбуза",
     category: "Гарніри",
-    price: 40,
-    weight_grams: 150,
-    nutritional_value: { calories: 65, protein: 1.5, fat: 0.2, carbs: 15 },
+    price: 60,
+    weight_grams: 350,
+    nutritional_value: { calories: 245, protein: 5, fat: 1, carbs: 55 },
     is_available: true
   },
   {
     _id: greenBeansId,
-    name: "Стручкова квасоля з часником",
+    name: "Стручкова квасоля та броколі",
     category: "Овочі",
-    price: 55,
-    weight_grams: 100,
-    nutritional_value: { calories: 35, protein: 2, fat: 0.2, carbs: 7 },
+    price: 90,
+    weight_grams: 300,
+    nutritional_value: { calories: 120, protein: 8, fat: 1, carbs: 20 },
     is_available: true
   },
   {
     _id: beetrootId,
-    name: "Карпачо з буряка з волоським горіхом",
+    name: "Буряк з волоським горіхом та олією",
     category: "Овочі",
-    price: 60,
-    weight_grams: 100,
-    nutritional_value: { calories: 110, protein: 3, fat: 7, carbs: 10 },
+    price: 85,
+    weight_grams: 250,
+    nutritional_value: { calories: 380, protein: 8, fat: 25, carbs: 30 },
     is_available: true
   },
   {
     _id: avocadoId,
-    name: "Слайси стиглого авокадо",
+    name: "Свіже авокадо (на кілька прийомів)",
     category: "Овочі",
-    price: 60,
-    weight_grams: 50,
-    nutritional_value: { calories: 80, protein: 1, fat: 7.5, carbs: 4 },
+    price: 120,
+    weight_grams: 150,
+    nutritional_value: { calories: 240, protein: 3, fat: 22, carbs: 12 },
+    is_available: true
+  },
+  {
+    _id: complexSaladId,
+    name: "Мікс салатів з оливковою олією та насінням",
+    category: "Овочі",
+    price: 110,
+    weight_grams: 300,
+    nutritional_value: { calories: 350, protein: 6, fat: 32, carbs: 10 },
     is_available: true
   }
 ]);
 
-// 3. Завантажуємо 6 готових Боксів із новими комбінаціями
 db.boxes.insertMany([
   {
     title: 'Набір "Свіжий старт"',
@@ -150,7 +151,7 @@ db.boxes.insertMany([
     price: 550.00,
     image_url: 'https://res.cloudinary.com/coursework-smachnobox/image/upload/q_auto/f_auto/v1780925575/start_q4rnwa.jpg',
     tags: ['Збалансований'],
-    ingredients: [chickenId, buckwheatId, greenBeansId] // Курка, гречка, стручкова квасоля
+    ingredients: [chickenId, buckwheatId, greenBeansId, complexSaladId] 
   },
   {
     title: 'Набір "Вегетаріанський"',
@@ -158,7 +159,7 @@ db.boxes.insertMany([
     price: 605.00,
     image_url: 'https://res.cloudinary.com/coursework-smachnobox/image/upload/q_auto/f_auto/v1780925655/vegeterian_ixnmcv.jpg',
     tags: ['Вегетаріанський', 'Без м`яса'],
-    ingredients: [tofuId, bulgurId, beetrootId] // Тофу, булгур, буряк з горіхами
+    ingredients: [tofuId, bulgurId, beetrootId, complexSaladId] 
   },
   {
     title: 'Набір "Баланс"',
@@ -166,7 +167,7 @@ db.boxes.insertMany([
     price: 570.00,
     image_url: 'https://res.cloudinary.com/coursework-smachnobox/image/upload/q_auto/f_auto/v1780924627/balance_vrgyx6.jpg',
     tags: ['Дієтичний', 'Збалансований'],
-    ingredients: [turkeyId, pumpkinId, greenBeansId] // Індичка су-від, гарбузове пюре, стручкова квасоля
+    ingredients: [turkeyId, bulgurId, pumpkinId, complexSaladId] 
   },
   {
     title: 'Набір "Омега-3 заряд"',
@@ -174,15 +175,15 @@ db.boxes.insertMany([
     price: 995.00,
     image_url: 'https://res.cloudinary.com/coursework-smachnobox/image/upload/q_auto/f_auto/v1780927567/omega_3_rjrbrg.jpg',
     tags: ['Омега жири', 'Кето'],
-    ingredients: [salmonId, beetrootId, avocadoId] // Лосось, карпачо з буряка, авокадо
+    ingredients: [salmonId, avocadoId, beetrootId, greenBeansId] 
   },
   {
-    title: 'Набір "М\'ясний"',
+    title: 'Набір "М\'ясний Про Макс"',
     description: 'Високобілковий раціон, розроблений для стимуляції м\'язової гіпертрофії та відновлення після інтенсивних фізичних навантажень.',
-    price: 675.00,
+    price: 750.00,
     image_url: 'https://res.cloudinary.com/coursework-smachnobox/image/upload/q_auto/f_auto/v1780927801/meat3_bok0ux.jpg',
     tags: ['Для спортсменів', 'Високий білок'],
-    ingredients: [beefId, chickenId, buckwheatId] // Телятина, курка, гречка
+    ingredients: [beefId, chickenId, buckwheatId, greenBeansId] 
   },
   {
     title: 'Набір "Морський"',
@@ -190,8 +191,8 @@ db.boxes.insertMany([
     price: 1050.00,
     image_url: 'https://res.cloudinary.com/coursework-smachnobox/image/upload/q_auto/f_auto/v1780928094/seafood_sfpebf.png',
     tags: ['Амінокислоти', 'Морепродукти'],
-    ingredients: [shrimpId, bulgurId, pumpkinId] // Креветки, булгур, пюре з гарбуза
+    ingredients: [shrimpId, salmonId, pumpkinId, complexSaladId] 
   }
 ]);
 
-console.log("✅ 6 Україномовних боксів з локальними та ексклюзивними інгредієнтами успішно завантажено!");
+console.log("Додано 6 боксів");

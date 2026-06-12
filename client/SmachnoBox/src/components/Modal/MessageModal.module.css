@@ -59,8 +59,3 @@
   background-color: #458a25;
   transform: translateY(-2px);
 }
-
-/* Кольори заголовків залежно від типу повідомлення */
-.success .title { color: #56ab2f; }
-.warning .title { color: #f39c12; }
-.error .title { color: #ff4757; }

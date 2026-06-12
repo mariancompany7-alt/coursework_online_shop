@@ -8,8 +8,8 @@ html {
 }
 
 body {
-  background-color: #454545; /* Дуже темно-сірий, майже чорний */
+  background-color: #454545;
   color: #ffffff;
   margin: 0;
-  font-family: sans-serif; /* Або твій шрифт */
+  font-family: sans-serif;
 }

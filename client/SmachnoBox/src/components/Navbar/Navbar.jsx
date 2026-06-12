@@ -7,7 +7,6 @@ function Navbar() {
   const location = useLocation();
   const [user, setUser] = useState(null);
 
-  // Перевірка авторизації
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -17,7 +16,6 @@ function Navbar() {
     }
   }, [location]);
 
-  // Плавний скрол для хеш-посилань після завантаження сторінки
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.replace('#', '');
@@ -32,7 +30,6 @@ function Navbar() {
 
   return (
     <div className={styles.navbarWrapper}>
-      {/* Навігаційне меню */}
       <nav className={styles.navigation}>
         <ul>
           <li><Link to="/">Головна</Link></li>
@@ -42,10 +39,8 @@ function Navbar() {
         </ul>
       </nav>
       
-      {/* Блок елементів керування */}
       <div className={styles.actions}>
         {user ? (
-          /* Овальна капсула особистого кабінету */
           <Link to="/dashboard" className={styles.profileLink} title="Особистий кабінет">
             <span className={styles.username}>Кабінет</span>
             <div className={styles.profileAvatar}>
@@ -57,7 +52,6 @@ function Navbar() {
             </div>
           </Link>
         ) : (
-          /* Кнопка входу для неавторизованих користувачів */
           <Link to="/login">
             <button type="button" className={styles.button}>Увійти</button>
           </Link>

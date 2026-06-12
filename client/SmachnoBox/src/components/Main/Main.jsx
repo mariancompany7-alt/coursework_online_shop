@@ -4,30 +4,25 @@ import Card from '../products/ProductCard/Card';
 import styles from './Main.module.css';
 
 function Main({ plans }) {
-  // Стани для модальних вікон (з попередніх кроків)
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
 
-  // Стани для фільтрів, пошуку та пагінації
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTag, setFilterTag] = useState('Всі');
   const [sortBy, setSortBy] = useState('default');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3; // Кількість карток на одній сторінці (поставив 3, щоб ти відразу побачив пагінацію)
+  const itemsPerPage = 3;
 
-  // 1. Динамічно отримуємо всі унікальні теги з боксів для випадаючого списку
   const allTags = useMemo(() => {
     if (!plans) return ['Всі'];
     const tags = plans.flatMap(p => p.tags || []);
     return ['Всі', ...new Set(tags)];
   }, [plans]);
 
-  // 2. Логіка пошуку, фільтрації та сортування
   const processedPlans = useMemo(() => {
     if (!plans) return [];
     let result = [...plans];
 
-    // Пошук (за назвою, описом або назвою інгредієнта всередині боксу)
     if (searchTerm) {
       const lowerTerm = searchTerm.toLowerCase();
       result = result.filter(box =>
@@ -37,7 +32,6 @@ function Main({ plans }) {
       );
     }
 
-    // Фільтрація за властивістю (тегом)
     if (filterTag !== 'Всі') {
       result = result.filter(box => box.tags && box.tags.includes(filterTag));
     }
@@ -49,14 +43,12 @@ function Main({ plans }) {
     return result;
   }, [plans, searchTerm, filterTag, sortBy]);
 
-  // 3. Пагінація (розрізаємо масив на сторінки)
   const totalPages = Math.ceil(processedPlans.length / itemsPerPage);
   const paginatedPlans = processedPlans.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Функції для скидання сторінки на 1 при будь-якій зміні фільтрів
   const handleSearch = (e) => { setSearchTerm(e.target.value); setCurrentPage(1); };
   const handleFilter = (e) => { setFilterTag(e.target.value); setCurrentPage(1); };
   const handleSort = (e) => { setSortBy(e.target.value); setCurrentPage(1); };
@@ -71,7 +63,6 @@ function Main({ plans }) {
           <p>Збалансовані бокси з відбірних інгредієнтів. Оберіть свій ідеальний набір на кожен день</p>
         </div>
 
-        {/* Панель керування: Пошук, Фільтр, Сортування */}
         <div className={styles.controlsContainer}>
           <input
             type="text"
@@ -96,7 +87,6 @@ function Main({ plans }) {
           </div>
         </div>
 
-        {/* Сітка карток */}
         <div className={styles['cards-grid']}>
           {paginatedPlans.length > 0 ? (
             paginatedPlans.map((plan) => (
@@ -112,7 +102,6 @@ function Main({ plans }) {
           )}
         </div>
 
-        {/* Пагінація (відображається тільки якщо сторінок більше ніж 1) */}
         {totalPages > 1 && (
           <div className={styles.pagination}>
             <button
@@ -144,7 +133,6 @@ function Main({ plans }) {
         )}
       </section>
 
-      {/* --- Модальні вікна (залишаються без змін) --- */}
       {showAuthModal && (
         <div className={styles.modalOverlay} onClick={() => setShowAuthModal(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>

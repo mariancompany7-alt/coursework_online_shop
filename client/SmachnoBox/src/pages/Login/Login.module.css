@@ -3,12 +3,12 @@
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  background-color: #454545; /* Загальний темний фон */
+  background-color: #454545;
   padding: 20px;
 }
 
 .card {
-  background-color: #303030; /* Темно-сіра картка */
+  background-color: #303030;
   border: 1px solid #4a4a4a;
   padding: 40px;
   border-radius: 16px;
@@ -61,7 +61,7 @@
 
 .inputGroup input:focus {
   outline: none;
-  border-color: #56ab2f; /* Твій фірмовий зелений */
+  border-color: #56ab2f;
   box-shadow: 0 0 2px rgba(86, 171, 47, 0.2);
 }
 
@@ -83,7 +83,6 @@
   transform: translateY(-2px);
 }
 
-/* Стилі для повідомлень */
 .errorAlert {
   background-color: rgba(231, 76, 60, 0.2);
   color: #e74c3c;

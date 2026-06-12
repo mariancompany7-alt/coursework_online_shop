@@ -15,7 +15,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Чорне затемнення на 60% */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,7 +46,7 @@
 
 .ctaButton {
   display: inline-block;
-  background-color: #56ab2f; /* Твій фірмовий зелений */
+  background-color: #56ab2f;
   color: white;
   padding: 16px 36px;
   border-radius: 8px;
@@ -58,10 +58,9 @@
 
 .ctaButton:hover {
   background-color: #458a25;
-  transform: translateY(-3px); /* Кнопка трохи піднімається */
+  transform: translateY(-3px);
 }
 
-/* Адаптивність для телефонів */
 @media (max-width: 768px) {
   .hero {
     height: 60vh;

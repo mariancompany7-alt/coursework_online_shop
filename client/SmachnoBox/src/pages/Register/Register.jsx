@@ -4,7 +4,7 @@ import styles from './Register.module.css';
 
 function Register() {
   const [formData, setFormData] = useState({ full_name: '', email: '', phone: '', password_hash: '' });
-  const [registerMethod, setRegisterMethod] = useState('email'); // 'email' або 'phone'
+  const [registerMethod, setRegisterMethod] = useState('email');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ function Register() {
     setError('');
     setSuccess('');
 
-    // Очищаємо непотрібне поле перед відправкою
     const dataToSend = { ...formData };
     if (registerMethod === 'email') delete dataToSend.phone;
     if (registerMethod === 'phone') delete dataToSend.email;
@@ -48,9 +47,7 @@ function Register() {
       <div className={styles.card}>
         <h2>Реєстрація у SmachnoBox</h2>
 
-        {/* Новий плавний перемикач методів реєстрації */}
         <div className={styles.toggleContainer}>
-          {/* Сам зелений повзунок. Додаємо клас sliderRight, якщо вибрано телефон */}
           <div
             className={`${styles.toggleSlider} ${registerMethod === 'phone' ? styles.sliderRight : ''}`}
           />
@@ -81,7 +78,6 @@ function Register() {
             <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} placeholder="Ваше ім'я" required />
           </div>
 
-          {/* Показуємо потрібне поле залежно від вибраного методу */}
           {registerMethod === 'email' ? (
             <div className={styles.inputGroup}>
               <label>Email</label>

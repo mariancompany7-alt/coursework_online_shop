@@ -5,7 +5,6 @@ const boxSchema = new mongoose.Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true, min: 0 },
   image_url: { type: String },
-  // Масив посилань на інгредієнти
   ingredients: [{ 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Ingredient' 

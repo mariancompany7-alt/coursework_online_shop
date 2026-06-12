@@ -1,10 +1,8 @@
 const Box = require('../models/Box');
-const Ingredient = require('../models/Ingredient'); // Обов'язково додаємо імпорт моделі Ingredient
+const Ingredient = require('../models/Ingredient');
 
-// Отримуємо всі бокси з бази даних
 exports.getAllBoxes = async (req, res) => {
     try {
-        // Додаємо .populate('ingredients'), щоб отримати повні об'єкти замість ID
         const boxes = await Box.find().populate('ingredients'); 
         res.status(200).json(boxes);
     } catch (error) {
@@ -13,7 +11,6 @@ exports.getAllBoxes = async (req, res) => {
     }
 };
 
-// Тимчасова функція для додавання боксу (знадобиться нам для заповнення БД)
 exports.createBox = async (req, res) => {
     try {
         const newBox = new Box(req.body);
@@ -24,11 +21,9 @@ exports.createBox = async (req, res) => {
     }
 };
 
-// Оновлення існуючого боксу
 exports.updateBox = async (req, res) => {
     try {
         const { id } = req.params;
-        // Знаходимо бокс за ID і оновлюємо його новими даними з req.body
         const updatedBox = await Box.findByIdAndUpdate(id, req.body, { new: true });
         
         if (!updatedBox) {
@@ -41,7 +36,6 @@ exports.updateBox = async (req, res) => {
     }
 };
 
-// Видалення боксу
 exports.deleteBox = async (req, res) => {
     try {
         const { id } = req.params;

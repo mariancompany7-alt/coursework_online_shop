@@ -57,7 +57,6 @@
   border: 1px solid rgba(86, 171, 47, 0.3);
 }
 
-/* --- Стилі для розгортання складу (Темна тема) --- */
 .ingredients-section {
   margin: 15px 0;
 }
@@ -131,7 +130,6 @@
   font-size: 12px;
   font-weight: 500;
 }
-/* ------------------------------------------------- */
 
 .card-details {
   margin-top: auto;
@@ -174,33 +172,286 @@
   background-color: #458a25;
 }
 
+.actionsRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  width: 100%;
+}
 
+.infoBtn {
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: 1px solid #4a4a4a;
+  padding: 10px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1;
+  transition: background-color 0.2s, transform 0.2s;
+}
 
-/* =========================================
-   АДАПТИВНІСТЬ (МЕДІАЗАПИТИ)
-========================================= */
+.infoBtn:hover {
+  background-color: #4a4a4a;
+  transform: translateY(-2px);
+}
+
+.orderLink {
+  flex: 1;
+  text-decoration: none;
+  display: block;
+}
+
+.orderLink button {
+  width: 100%;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modalContent {
+  background-color: #303030;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #4a4a4a;
+  max-width: 450px;
+  width: 90%;
+  color: #ffffff;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalHeader {
+  border-bottom: 1px solid #4a4a4a;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.modalTitle {
+  color: #56ab2f;
+  margin: 0;
+  font-size: 22px;
+}
+
+.modalSectionTitle {
+  color: #bdc3c7;
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.modalValue {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+}
+
+.modalText {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.closeBtn {
+  background-color: #56ab2f;
+  color: #ffffff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 25px;
+  float: right;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.closeBtn:hover {
+  background-color: #458a25;
+  transform: translateY(-2px);
+}
+
+.actionsRow {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.infoBtn {
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: 1px solid #4a4a4a;
+  padding: 10px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1;
+  font-size: 14px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.infoBtn:hover {
+  background-color: #4a4a4a;
+  transform: translateY(-2px);
+}
+
+.orderLink {
+  flex: 1;
+  text-decoration: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background-color: #303030;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #4a4a4a;
+  max-width: 480px;
+  width: 90%;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalHeader {
+  border-bottom: 1px solid #4a4a4a;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.modalTitle {
+  color: #56ab2f;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.modalSectionTitle {
+  color: #bdc3c7;
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modalValue {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modalText {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e0e0e0;
+  margin: 0 0 20px 0;
+}
+
+.ingredientsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingredientBadge {
+  background-color: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.ingredientWeight {
+  color: #56ab2f;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.closeBtn {
+  background-color: #56ab2f;
+  color: #ffffff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  float: right;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.closeBtn:hover {
+  background-color: #458a25;
+  transform: translateY(-2px);
+}
 
 @media screen and (max-width: 768px) {
   .card-image {
-    height: 180px; /* Трохи нижча картинка на планшетах */
+    height: 180px;
   }
   
   .card-content {
-    padding: 20px; /* Зменшуємо внутрішні відступи картки */
+    padding: 20px;
   }
   
   .card-title {
-    font-size: 20px; /* Зменшуємо заголовок картки */
+    font-size: 20px;
   }
 }
 
 @media screen and (max-width: 480px) {
   .card-image {
-    height: 160px; /* Ще нижча картинка для маленьких екранів */
+    height: 160px;
   }
 
   .card-content {
-    padding: 16px; /* Ще менші відступи */
+    padding: 16px;
   }
 
   .card-title {
@@ -208,7 +459,7 @@
   }
 
   .card-description {
-    font-size: 13px; /* Трохи дрібніший опис */
+    font-size: 13px;
     margin-bottom: 15px;
   }
 

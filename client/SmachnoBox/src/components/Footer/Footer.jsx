@@ -6,23 +6,18 @@ function Footer() {
   return (
     <footer id="contact" className={styles.footer}>
       <div className={styles.footerContent}>
-        {/* Колонка з брендом та соцмережами */}
         <div className={styles.brandColumn}>
           <div className={styles.logo}>
             <img src="/images/logo.png" alt="SmachnoBox Logo" />
             <h1>SmachnoBox</h1>
           </div>
           <p>Здорове та смачне харчування з доставкою до ваших дверей.</p>
-          
-          {/* Посилання на соцмережі */}
           <div className={styles.socialLinks}>
             <a href="https://t.me/smachnobox" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>Telegram</a>
             <a href="https://instagram.com/smachnobox" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>Instagram</a>
             <a href="https://twitter.com/smachnobox" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>Twitter</a>
           </div>
         </div>
-
-        {/* Колонка Про нас */}
         <div className={styles.column}>
           <h3>Про нас</h3>
           <ul>
@@ -31,8 +26,6 @@ function Footer() {
             <li><a href="/#menu">Меню</a></li>
           </ul>
         </div>
-
-        {/* Колонка Контакти */}
         <div className={styles.column}>
           <h3>Контакти</h3>
           <ul>

@@ -1,9 +1,7 @@
 const Order = require('../models/Order');
 
-// 1. СТВОРЕННЯ НОВОГО ЗАМОВЛЕННЯ (Для покупця)
 exports.createOrder = async (req, res) => {
   try {
-    // ЗАХИСТ: Якщо роль користувача - адмін, блокуємо створення замовлення
     if (req.user.role === 'admin') {
       return res.status(403).json({ message: 'Адміністратори не можуть оформлювати замовлення як клієнти.' });
     }
@@ -15,7 +13,7 @@ exports.createOrder = async (req, res) => {
       delivery_address,
       total_amount,
       items,
-      payment_method, // Зберігаємо метод оплати
+      payment_method,
       payment_status
     });
 
@@ -27,12 +25,10 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-// 2. ОТРИМАННЯ ЗАМОВЛЕНЬ ПОТОЧНОГО КОРИСТУВАЧА (Для кабінету покупця)
 exports.getUserOrders = async (req, res) => {
   try {
-    // Шукаємо замовлення тільки цього юзера і сортуємо від найновіших
     const orders = await Order.find({ user_id: req.user._id })
-      .populate('items.box_id', 'title image_url') // Підтягуємо назви боксів для красивого відображення
+      .populate('items.box_id', 'title image_url')
       .sort({ createdAt: -1 });
     res.status(200).json(orders);
   } catch (error) {
@@ -40,11 +36,11 @@ exports.getUserOrders = async (req, res) => {
   }
 };
 
-// Отримати всі замовлення
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate('user_id', 'full_name phone email')
+      .populate('items.box_id', 'title name')
       .sort({ createdAt: -1 });
     res.status(200).json(orders);
   } catch (error) {
@@ -52,7 +48,6 @@ exports.getAllOrders = async (req, res) => {
   }
 };
 
-// Оновити статус замовлення
 exports.updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -65,7 +60,6 @@ exports.updateOrderStatus = async (req, res) => {
   }
 };
 
-// Видалити замовлення
 exports.deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;

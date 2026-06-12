@@ -16,7 +16,6 @@ const userRoutes = require('./server/routes/userRoutes');
 const boxRoutes = require('./server/routes/boxRoutes');
 const orderRoutes = require('./server/routes/orderRoutes');
 
-// Підключення ендпоінтів
 app.use('/api/users', userRoutes);
 app.use('/api/boxes', boxRoutes);
 app.use('/api/orders', orderRoutes);
