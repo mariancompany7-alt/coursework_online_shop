@@ -135,7 +135,7 @@ function Dashboard() {
                           <span>
                             {order.delivery_address?.street?.includes('Тернопіль') 
                               ? order.delivery_address.street 
-                              : `м. ${order.delivery_address?.city}, вул. ${order.delivery_address?.street}`}
+                              : ` ${order.delivery_address?.city} ${order.delivery_address?.street}`}
                           </span>
                         </div>
                       </div>
