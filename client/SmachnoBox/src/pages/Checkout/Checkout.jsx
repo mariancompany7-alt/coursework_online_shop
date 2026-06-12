@@ -213,7 +213,7 @@ function Checkout() {
       {successMessage && (
         <div className={styles.modalOverlay} onClick={handleSuccessClose}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalIcon} style={{ fontSize: '40px', marginBottom: '10px' }}>✅</div>
+            <div className={styles.modalIcon} style={{ fontSize: '40px', marginBottom: '10px' }}></div>
             <h2 style={{ color: '#56ab2f' }}>Сформовано</h2>
             <p>{successMessage}</p>
             <div className={styles.modalActions}>
