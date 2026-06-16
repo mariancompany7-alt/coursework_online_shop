@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'supersecretkey', {
@@ -10,12 +12,31 @@ const generateToken = (id) => {
 exports.createUser = async (req, res) => {
   try {
     const { email, phone, password, password_hash } = req.body;
-    const incomingPassword = password || password_hash;
     
+    const incomingPassword = password || password_hash; 
+
     if (!email && !phone) {
       return res.status(400).json({ success: false, message: 'Введіть Email або Номер телефону' });
     }
-    const newUser = new User(req.body); 
+
+    if (!incomingPassword) {
+      return res.status(400).json({ success: false, message: 'Введіть пароль' });
+    }
+
+    if (!PASSWORD_REGEX.test(incomingPassword)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Пароль надто простий! Має бути від 6 символів, містити велику, малу літеру та цифру.' 
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(incomingPassword, salt);
+
+    const userData = { ...req.body, password_hash: hashedPassword };
+    delete userData.password;
+
+    const newUser = new User(userData); 
     const savedUser = await newUser.save();
     
     const token = generateToken(savedUser._id);
@@ -43,10 +64,15 @@ exports.createUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   try {
-    const { email, phone, password_hash } = req.body;
+    const { email, phone, password, password_hash } = req.body;
+    const incomingPassword = password || password_hash;
 
     if (!email && !phone) {
       return res.status(400).json({ success: false, message: 'Введіть Email або Номер телефону' });
+    }
+
+    if (!incomingPassword) {
+      return res.status(400).json({ success: false, message: 'Введіть пароль' });
     }
 
     const query = email ? { email } : { phone };
@@ -56,7 +82,8 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Користувача не знайдено' });
     }
 
-    if (user.password_hash !== password_hash) {
+    const isMatch = await bcrypt.compare(incomingPassword, user.password_hash);
+    if (!isMatch) {
       return res.status(400).json({ success: false, message: 'Невірний пароль' });
     }
 

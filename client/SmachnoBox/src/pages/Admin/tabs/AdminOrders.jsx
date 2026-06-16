@@ -86,10 +86,10 @@ export default function AdminOrders() {
                   value={o.status} 
                   onChange={e => changeStatus(o._id, e.target.value)}
                 >
-                  <option value="pending">Очікує</option>
+                  <option value="pending">Очікує на підтвердження</option>
                   <option value="processing">В обробці</option>
                   <option value="delivering">В дорозі</option>
-                  <option value="completed">Виконано</option>
+                  <option value="completed">Доставлено</option>
                   <option value="cancelled">Скасовано</option>
                 </select>
               </td>

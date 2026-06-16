@@ -178,7 +178,7 @@ db.boxes.insertMany([
     ingredients: [salmonId, avocadoId, beetrootId, greenBeansId] 
   },
   {
-    title: 'Набір "М\'ясний Про Макс"',
+    title: 'Набір "М\'ясний"',
     description: 'Високобілковий раціон, розроблений для стимуляції м\'язової гіпертрофії та відновлення після інтенсивних фізичних навантажень.',
     price: 750.00,
     image_url: 'https://res.cloudinary.com/coursework-smachnobox/image/upload/q_auto/f_auto/v1780927801/meat3_bok0ux.jpg',

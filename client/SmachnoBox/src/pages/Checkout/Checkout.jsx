@@ -5,11 +5,11 @@ import styles from './Checkout.module.css';
 function Checkout() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const [cartItem, setCartItem] = useState(location.state?.selectedBox || null);
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState(''); // Стан для модалки успіху
 
@@ -34,13 +34,13 @@ function Checkout() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name === 'cardNumber') {
       const formatted = value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
       setFormData(prev => ({ ...prev, [name]: formatted.substring(0, 19) }));
       return;
     }
-    
+
     if (name === 'expiryDate') {
       const formatted = value.replace(/\D/g, '').replace(/(.{2})/, '$1/').trim();
       setFormData(prev => ({ ...prev, [name]: formatted.substring(0, 5) }));
@@ -61,11 +61,11 @@ function Checkout() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const token = localStorage.getItem('token');
     if (!token) {
-        setErrorMessage("Щоб завершити оформлення замовлення, будь ласка, спочатку увійдіть у свій акаунт або зареєструйтесь.");
-        return;
+      setErrorMessage("Щоб завершити оформлення замовлення, будь ласка, спочатку увійдіть у свій акаунт або зареєструйтесь.");
+      return;
     }
 
     if (formData.paymentMethod === 'card') {
@@ -81,52 +81,55 @@ function Checkout() {
       setTimeout(() => resolve(true), 1500);
     });
     await processPayment;
-    
+
     const orderPayload = {
       total_amount: totalAmount,
-      delivery_address: { city: "Тернопіль", street: formData.address },
+      delivery_address: {
+        city: formData.address.toLowerCase().includes('тернопіль') ? '' : 'м. Тернопіль',
+        street: formData.address
+      },
       payment_method: formData.paymentMethod,
       payment_status: formData.paymentMethod === 'card' ? 'paid' : 'pending',
       items: [{
         box_id: cartItem._id,
-        quantity: quantity, 
+        quantity: quantity,
         price: cartItem.price
       }]
     };
 
     try {
-        const res = await fetch('http://localhost:5000/api/orders', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-            body: JSON.stringify(orderPayload)
-        });
+      const res = await fetch('http://localhost:5000/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(orderPayload)
+      });
 
-        if (res.ok) {
-            setSuccessMessage('Ваше замовлення успішно сформовано! Дякуємо, що обрали SmachnoBox.');
-        } else if (res.status === 401) {
-            setErrorMessage("Сесія застаріла. Будь ласка, увійдіть в акаунт знову.");
-        } else {
-            const errorData = await res.json();
-            setErrorMessage(`Помилка: ${errorData.message}`);
-        }
+      if (res.ok) {
+        setSuccessMessage('Ваше замовлення успішно сформовано! Дякуємо, що обрали SmachnoBox.');
+      } else if (res.status === 401) {
+        setErrorMessage("Сесія застаріла. Будь ласка, увійдіть в акаунт знову.");
+      } else {
+        const errorData = await res.json();
+        setErrorMessage(`Помилка: ${errorData.message}`);
+      }
     } catch (err) {
-        console.error("Помилка мережі:", err);
-        setErrorMessage("Виникла помилка мережі. Спробуйте пізніше.");
+      console.error("Помилка мережі:", err);
+      setErrorMessage("Виникла помилка мережі. Спробуйте пізніше.");
     } finally {
-        setIsProcessing(false);
+      setIsProcessing(false);
     }
   };
 
   const handleSuccessClose = () => {
     setSuccessMessage('');
-    navigate('/dashboard'); 
+    navigate('/dashboard');
   };
 
   return (
     <main className={styles.checkoutPage}>
       <div className={styles.container}>
         <h1 className={styles.pageTitle}>Оформлення замовлення</h1>
-        
+
         <div className={styles.layout}>
           <form onSubmit={handleSubmit} className={styles.formSection}>
             <h2 className={styles.sectionTitle}>1. Дані для доставки</h2>

@@ -65,7 +65,6 @@ export default function AdminBoxes() {
             <th>Назва</th>
             <th>Опис</th>
             <th>Ціна</th>
-            <th>Склад</th>
             <th>Дії</th>
           </tr>
         </thead>
@@ -83,7 +82,6 @@ export default function AdminBoxes() {
               <td><b>{b.title || b.name}</b></td>
               <td>{b.description}</td>
               <td>{b.price} ₴</td>
-              <td>{b.ingredients ? `${b.ingredients.length} інгр.` : '0 інгр.'}</td>
               <td>
                 <div className={styles.actionsGroup}>
                   <button 
