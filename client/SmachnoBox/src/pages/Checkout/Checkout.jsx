@@ -12,11 +12,30 @@ function Checkout() {
 
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState(''); // Стан для модалки успіху
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelMessage, setCancelMessage] = useState('');
 
   const [formData, setFormData] = useState({
     name: '', phone: '', address: '', paymentMethod: 'cash', comment: '',
     cardNumber: '', expiryDate: '', cvv: ''
   });
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('user');
+      if (stored) {
+        const u = JSON.parse(stored);
+        setFormData(prev => ({
+          ...prev,
+          name: u.full_name || prev.name,
+          phone: u.phone || prev.phone,
+          address: (u.addresses && u.addresses[0]) ? [u.addresses[0].city, u.addresses[0].street, u.addresses[0].building, u.addresses[0].apartment].filter(Boolean).join(', ') : prev.address
+        }));
+      }
+    } catch (err) {
+      // ignore
+    }
+  }, []);
 
   if (!cartItem) {
     return (
@@ -57,7 +76,37 @@ function Checkout() {
     });
   };
 
-  const handleRemoveItem = () => setCartItem(null);
+  const handleRemoveItem = () => {
+    setCancelMessage('Ви впевнені, що хочете видалити цей товар з кошика?');
+    setShowCancelModal(true);
+  };
+
+  const confirmRemoveItem = () => {
+    setShowCancelModal(false);
+    setCancelMessage('');
+    setCartItem(null);
+  };
+
+  const parseDeliveryAddress = (address) => {
+    const normalized = address.trim();
+    if (!normalized) return { city: 'м. Тернопіль', street: '' };
+
+    const parts = normalized.split(',').map(part => part.trim()).filter(Boolean);
+    const firstPart = parts[0] ? parts[0].toLowerCase() : '';
+    const hasTernopil = ['тернопіль', 'м тернопіль', 'м. тернопіль', 'м.тернопіль', 'м. тернополь'].some(indicator => firstPart.includes(indicator));
+
+    if (hasTernopil && parts.length > 1) {
+      return {
+        city: 'м. Тернопіль',
+        street: parts.slice(1).join(', ')
+      };
+    }
+
+    return {
+      city: 'м. Тернопіль',
+      street: normalized
+    };
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,6 +114,21 @@ function Checkout() {
     const token = localStorage.getItem('token');
     if (!token) {
       setErrorMessage("Щоб завершити оформлення замовлення, будь ласка, спочатку увійдіть у свій акаунт або зареєструйтесь.");
+      return;
+    }
+
+    if (!formData.name || !formData.name.trim()) {
+      setErrorMessage("Будь ласка, введіть ім'я та прізвище отримувача.");
+      return;
+    }
+
+    if (!formData.phone || !formData.phone.trim()) {
+      setErrorMessage("Будь ласка, введіть контактний номер телефону.");
+      return;
+    }
+
+    if (!formData.address || !formData.address.trim()) {
+      setErrorMessage("Будь ласка, введіть адресу доставки.");
       return;
     }
 
@@ -82,12 +146,17 @@ function Checkout() {
     });
     await processPayment;
 
+    const addressData = parseDeliveryAddress(formData.address);
+
+    if (!cartItem || !cartItem._id) {
+      setErrorMessage('Неможливо оформити замовлення, оберіть план харчування ще раз.');
+      setIsProcessing(false);
+      return;
+    }
+
     const orderPayload = {
       total_amount: totalAmount,
-      delivery_address: {
-        city: formData.address.toLowerCase().includes('тернопіль') ? '' : 'м. Тернопіль',
-        street: formData.address
-      },
+      delivery_address: addressData,
       payment_method: formData.paymentMethod,
       payment_status: formData.paymentMethod === 'card' ? 'paid' : 'pending',
       items: [{
@@ -205,7 +274,7 @@ function Checkout() {
               </div>
             </div>
             <div className={styles.actions}>
-              <button type="submit" onClick={handleSubmit} className={styles.submitButton} disabled={isProcessing}>
+              <button type="button" className={styles.submitButton} disabled={isProcessing} onClick={handleSubmit}>
                 {isProcessing ? 'Обробка транзакції...' : (formData.paymentMethod === 'card' ? `Оплатити ${totalAmount} ₴` : 'Підтвердити замовлення')}
               </button>
             </div>
@@ -249,6 +318,25 @@ function Checkout() {
                   Зрозуміло
                 </button>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCancelModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowCancelModal(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalIcon}></div>
+            <p>{cancelMessage}</p>
+            <div className={styles.modalActions}>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
+                <button onClick={confirmRemoveItem} className={styles.closeBtn} style={{ backgroundColor: '#e74c3c' }}>
+                  Видалити
+                </button>
+                <button onClick={() => setShowCancelModal(false)} className={styles.closeBtn} style={{ backgroundColor: '#7f8c8d' }}>
+                  Скасувати
+                </button>
+              </div>
             </div>
           </div>
         </div>

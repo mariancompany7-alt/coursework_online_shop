@@ -3,6 +3,8 @@ import styles from './AdminTabs.module.css';
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   const loadOrders = async () => {
     const token = localStorage.getItem('token');
@@ -25,12 +27,21 @@ export default function AdminOrders() {
   };
 
   const deleteOrder = async (id) => {
-    if (!window.confirm("Видалити замовлення?")) return;
+    setSelectedOrderId(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteOrder = async () => {
+    if (!selectedOrderId) return;
     const token = localStorage.getItem('token');
-    const res = await fetch(`http://localhost:5000/api/orders/${id}`, { 
+    const res = await fetch(`http://localhost:5000/api/orders/${selectedOrderId}`, { 
       method: 'DELETE', headers: { Authorization: `Bearer ${token}` } 
     });
-    if (res.ok) loadOrders();
+    if (res.ok) {
+      setShowDeleteModal(false);
+      setSelectedOrderId(null);
+      loadOrders();
+    }
   };
 
   return (
@@ -104,6 +115,24 @@ export default function AdminOrders() {
           ))}
         </tbody>
       </table>
+
+      {showDeleteModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowDeleteModal(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <p>Ви впевнені, що хочете видалити це замовлення?</p>
+            <div className={styles.modalActions}>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
+                <button onClick={confirmDeleteOrder} className={styles.btn} style={{ backgroundColor: '#e74c3c', color: 'white' }}>
+                  Видалити
+                </button>
+                <button onClick={() => setShowDeleteModal(false)} className={styles.btn} style={{ backgroundColor: '#7f8c8d', color: 'white' }}>
+                  Скасувати
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

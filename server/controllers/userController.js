@@ -49,7 +49,8 @@ exports.createUser = async (req, res) => {
         full_name: savedUser.full_name,
         email: savedUser.email,
         phone: savedUser.phone,
-        role: savedUser.role
+        role: savedUser.role,
+        addresses: savedUser.addresses || []
       }
     });
   } catch (error) {
@@ -98,7 +99,8 @@ exports.loginUser = async (req, res) => {
         full_name: user.full_name,
         email: user.email,
         phone: user.phone,
-        role: user.role
+        role: user.role,
+        addresses: user.addresses || []
       }
     });
   } catch (error) {

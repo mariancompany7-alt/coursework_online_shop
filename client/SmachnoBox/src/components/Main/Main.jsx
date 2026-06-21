@@ -151,7 +151,7 @@ function Main({ plans }) {
         <div className={styles.modalOverlay} onClick={() => setShowAdminModal(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalIcon}></div>
-            <h2>Доступ обмежено</h2>
+            <h2>Увага</h2>
             <p>Адміністратори не можуть створювати клієнтські замовлення. Увійдіть як звичайний покупець, щоб оформити покупку.</p>
             <div className={styles.modalActions}>
               <button onClick={() => setShowAdminModal(false)} className={styles.closeBtn} style={{ backgroundColor: '#444', color: '#fff' }}>Зрозуміло</button>
